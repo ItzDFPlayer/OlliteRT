@@ -66,7 +66,7 @@ const val WARMUP_TIMEOUT_SECONDS = 10L
 
 // Inference timeouts (seconds).
 // Timeout for /v1/chat/completions and /v1/completions endpoints.
-const val CHAT_COMPLETIONS_TIMEOUT_SECONDS = 120L
+const val CHAT_COMPLETIONS_TIMEOUT_SECONDS = 240L
 // Timeout for /v1/responses endpoint.
 const val RESPONSES_TIMEOUT_SECONDS = 90L
 // Default timeout for streaming inference.
