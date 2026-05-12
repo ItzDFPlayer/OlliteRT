@@ -360,14 +360,14 @@ class KtorServer(
     post("/v1/completions") {
       if (!requireAuth(call)) return@post
       withRequestLogging(call) { body, captureBody, captureResponse, logId, _, prefs ->
-        endpointHandlers.handleCompletions(body, captureBody, captureResponse, logId, prefs)
+        endpointHandlers.handleCompletions(serviceContext, body, captureBody, captureResponse, logId, prefs)
       }
     }
 
     post("/v1/chat/completions") {
       if (!requireAuth(call)) return@post
       withRequestLogging(call) { body, captureBody, captureResponse, logId, _, prefs ->
-        endpointHandlers.handleChatCompletion(body, captureBody, captureResponse, logId, prefs)
+        endpointHandlers.handleChatCompletion(serviceContext, body, captureBody, captureResponse, logId, prefs)
       }
     }
 

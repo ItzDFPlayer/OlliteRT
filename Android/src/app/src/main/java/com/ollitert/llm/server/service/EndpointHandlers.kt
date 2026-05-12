@@ -18,6 +18,7 @@
 package com.ollitert.llm.server.service
 
 import android.content.Context
+import com.ollitert.llm.server.data.ServerPrefs
 import com.ollitert.llm.server.data.CHAT_COMPLETIONS_TIMEOUT_SECONDS
 import com.ollitert.llm.server.data.ConfigKeys
 import com.ollitert.llm.server.data.RequestPrefsSnapshot
@@ -105,6 +106,7 @@ class EndpointHandlers(
   // ── /v1/chat/completions ─────────────────────────────────────────────────
 
   suspend fun handleChatCompletion(
+    context: Context,
     body: String,
     captureBody: (String) -> Unit = {},
     captureResponse: (String) -> Unit = {},
@@ -191,12 +193,13 @@ class EndpointHandlers(
     val sampler = resolveSamplerOverrides(model, prefs, req.temperature, req.top_p, req.top_k, effectiveMaxTokens, logId)
 
     val stopSeqs = req.stop.ifEmpty { null }
+    val timeoutSeconds = ServerPrefs.getChatCompletionsTimeoutSeconds(context).toLong()
     return if (req.stream == true) {
-      inferenceRunner.streamChatLlm(model, prompt, requestId, "/v1/chat/completions", timeoutSeconds = CHAT_COMPLETIONS_TIMEOUT_SECONDS, images = images, audioClips = audioClips, logId = logId, includeUsage = includeUsage, stopSequences = stopSeqs, tools = if (hasTools) tools else null, configSnapshot = sampler, json = json, prefs = prefs, schemaInjectionProviders = schemaInjectionProviders, schemaInjectionMessages = schemaInjectionMessages)
+      inferenceRunner.streamChatLlm(model, prompt, requestId, "/v1/chat/completions", timeoutSeconds = timeoutSeconds, images = images, audioClips = audioClips, logId = logId, includeUsage = includeUsage, stopSequences = stopSeqs, tools = if (hasTools) tools else null, configSnapshot = sampler, json = json, prefs = prefs, schemaInjectionProviders = schemaInjectionProviders, schemaInjectionMessages = schemaInjectionMessages)
     } else {
       ServerMetrics.onInferenceStarted()
       var schemaInjectionToolCalls: List<ToolCall> = emptyList()
-      val (rawText, llmError) = inferenceRunner.runLlm(model, prompt, requestId, "/v1/chat/completions", timeoutSeconds = CHAT_COMPLETIONS_TIMEOUT_SECONDS, images = images, audioClips = audioClips, logId = logId, configSnapshot = sampler, prefs = prefs, schemaInjectionProviders = schemaInjectionProviders, schemaInjectionMessages = schemaInjectionMessages, onNativeToolCalls = if (useSchemaInjection) { calls -> schemaInjectionToolCalls = calls } else null)
+      val (rawText, llmError) = inferenceRunner.runLlm(model, prompt, requestId, "/v1/chat/completions", timeoutSeconds = timeoutSeconds, images = images, audioClips = audioClips, logId = logId, configSnapshot = sampler, prefs = prefs, schemaInjectionProviders = schemaInjectionProviders, schemaInjectionMessages = schemaInjectionMessages, onNativeToolCalls = if (useSchemaInjection) { calls -> schemaInjectionToolCalls = calls } else null)
       ServerMetrics.onInferenceCompleted()
       if (rawText == null) return handleBlockingInferenceError(llmError, logId)
       val (text, _) = InferenceRunner.applyStopSequences(rawText, stopSeqs)
@@ -235,6 +238,7 @@ class EndpointHandlers(
   // ── /v1/completions ──────────────────────────────────────────────────────
 
   suspend fun handleCompletions(
+    context: Context,
     body: String,
     captureBody: (String) -> Unit = {},
     captureResponse: (String) -> Unit = {},
@@ -286,12 +290,13 @@ class EndpointHandlers(
 
     val includeUsage = req.stream_options?.include_usage == true
     val stopSeqs = stopSequences?.ifEmpty { null }
+    val timeoutSeconds = ServerPrefs.getChatCompletionsTimeoutSeconds(context).toLong()
 
     return if (req.stream == true) {
-      inferenceRunner.streamCompletions(model, prompt, requestId, "/v1/completions", timeoutSeconds = CHAT_COMPLETIONS_TIMEOUT_SECONDS, logId = logId, includeUsage = includeUsage, stopSequences = stopSeqs, configSnapshot = sampler, json = json, prefs = prefs)
+      inferenceRunner.streamCompletions(model, prompt, requestId, "/v1/completions", timeoutSeconds = timeoutSeconds, logId = logId, includeUsage = includeUsage, stopSequences = stopSeqs, configSnapshot = sampler, json = json, prefs = prefs)
     } else {
       ServerMetrics.onInferenceStarted()
-      val (rawText, llmError) = inferenceRunner.runLlm(model, prompt, requestId, "/v1/completions", timeoutSeconds = CHAT_COMPLETIONS_TIMEOUT_SECONDS, logId = logId, configSnapshot = sampler, prefs = prefs)
+      val (rawText, llmError) = inferenceRunner.runLlm(model, prompt, requestId, "/v1/completions", timeoutSeconds = timeoutSeconds, logId = logId, configSnapshot = sampler, prefs = prefs)
       ServerMetrics.onInferenceCompleted()
       if (rawText == null) return handleBlockingInferenceError(llmError, logId)
 

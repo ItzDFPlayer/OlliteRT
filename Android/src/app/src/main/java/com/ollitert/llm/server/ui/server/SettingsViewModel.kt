@@ -110,6 +110,7 @@ class SettingsViewModel @Inject constructor(
   // ─── Typed Accessors (preserve call-site readability) ──────────────────
   // Keys must match SettingDef.key values in SettingsDefinitions.kt.
   val portEntry get() = entry<Int>("host_port")
+  val chatCompletionsTimeoutEntry get() = entry<Int>("chat_completions_timeout")
   val bearerTokenEntry get() = entry<String>("bearer_token")
   val hfTokenEntry get() = entry<String>("hf_token")
   val defaultModelEntry get() = entry<String?>("default_model")
@@ -148,6 +149,7 @@ class SettingsViewModel @Inject constructor(
   // ─── UI State (non-persisted) ────────────────────────────────────────────
 
   var portText by mutableStateOf(portEntry.saved.toString())
+  var chatCompletionsTimeoutText by mutableStateOf(chatCompletionsTimeoutEntry.saved.toString())
   var hfTokenVisible by mutableStateOf(false)
   var showModelDropdown by mutableStateOf(false)
 
@@ -239,13 +241,15 @@ class SettingsViewModel @Inject constructor(
   val hasUnsavedChanges: Boolean get() {
     // Port is stored as Int but edited as String — compare via parsed int
     val portChanged = portText != portEntry.saved.toString()
+    // Chat completions timeout is stored as Int but edited as String — compare via parsed int
+    val timeoutChanged = chatCompletionsTimeoutText != chatCompletionsTimeoutEntry.saved.toString()
     // Bearer token uses effective value (blank when disabled)
     val bearerChanged = effectiveBearerToken != bearerTokenEntry.saved
-    // All other entries use SettingEntry change detection (skip port & bearer token)
+    // All other entries use SettingEntry change detection (skip port, timeout & bearer token)
     val entryChanged = entryByKey.entries.any { (key, entry) ->
-      key != "host_port" && key != "bearer_token" && entry.isChanged
+      key != "host_port" && key != "chat_completions_timeout" && key != "bearer_token" && entry.isChanged
     }
-    return portChanged || bearerChanged || entryChanged
+    return portChanged || timeoutChanged || bearerChanged || entryChanged
   }
 
   // ─── Save Logic ──────────────────────────────────────────────────────────
@@ -279,13 +283,17 @@ class SettingsViewModel @Inject constructor(
     }
 
     val port = portText.toIntOrNull() ?: return SaveResult.ValidationError(context.getString(R.string.validation_invalid_port))
+    val chatCompletionsTimeout = chatCompletionsTimeoutText.toIntOrNull() ?: return SaveResult.ValidationError("Invalid timeout value")
     val isPortChanged = port != portEntry.saved
+    val isTimeoutChanged = chatCompletionsTimeout != chatCompletionsTimeoutEntry.saved
     val isEagerVisionChanged = eagerVisionInitEntry.isChanged
-    val needsRestart = isPortChanged || isEagerVisionChanged
+    val needsRestart = isPortChanged || isTimeoutChanged || isEagerVisionChanged
     val isServerActive = serverStatus == ServerStatus.RUNNING || serverStatus == ServerStatus.LOADING
 
     // Sync portEntry.current from portText before persisting (port is edited as String)
     portEntry.update(port)
+    // Sync chatCompletionsTimeoutEntry.current from chatCompletionsTimeoutText before persisting (timeout is edited as String)
+    chatCompletionsTimeoutEntry.update(chatCompletionsTimeout)
 
     // ── Persist to SharedPreferences ──
     val wasLogPersistenceEnabled = ServerPrefs.isLogPersistenceEnabled(context)
@@ -316,7 +324,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     // ── Log changes ──
-    logSettingsChanges(port)
+    logSettingsChanges(port, chatCompletionsTimeout)
 
     // Write a full settings snapshot to logcat when verbose debug is turned on,
     // so exported debug logs contain the active configuration for diagnosis.
@@ -339,11 +347,13 @@ class SettingsViewModel @Inject constructor(
     // ── Advance saved baselines ──
     portEntry.apply()
     portText = port.toString()
+    chatCompletionsTimeoutEntry.apply()
+    chatCompletionsTimeoutText = chatCompletionsTimeout.toString()
     bearerEnabledEntry.apply()
     bearerTokenEntry.update(if (bearerEnabledEntry.current) bearerTokenEntry.current else "")
     bearerTokenEntry.apply()
     for ((key, entry) in entryByKey) {
-      if (key != "host_port" && key != "bearer_token") entry.apply()
+      if (key != "host_port" && key != "chat_completions_timeout" && key != "bearer_token") entry.apply()
     }
 
     // Re-check live server status before triggering restart — the server may have crashed
@@ -377,11 +387,14 @@ class SettingsViewModel @Inject constructor(
    * Log event text is intentionally English-only — these are diagnostic messages for the Logs tab,
    * not user-facing UI strings. They must be stable and grep-able across locales.
    */
-  private fun logSettingsChanges(newPort: Int) {
+  private fun logSettingsChanges(newPort: Int, newTimeout: Int) {
     val changes = mutableListOf<String>()
 
     // Port: compared via parsed int (portText → int)
     if (newPort != portEntry.saved) changes.add("Port: ${portEntry.saved} → $newPort")
+
+    // Chat completions timeout: compared via parsed int (chatCompletionsTimeoutText → int)
+    if (newTimeout != chatCompletionsTimeoutEntry.saved) changes.add("Response Timeout: ${chatCompletionsTimeoutEntry.saved}s → ${newTimeout}s")
 
     // Bearer token: derived state (enabled = token non-blank)
     val bearerWasEnabled = bearerTokenEntry.saved.isNotBlank()
@@ -391,7 +404,7 @@ class SettingsViewModel @Inject constructor(
 
     // All other settings: iterate definitions and format changed entries
     for (def in allSettingDefs) {
-      if (def.key == "host_port" || def.key == "bearer_token") continue // handled above
+      if (def.key == "host_port" || def.key == "chat_completions_timeout" || def.key == "bearer_token") continue // handled above
       val entry = entryByKey[def.key] ?: continue
       if (!entry.isChanged) continue
       formatChange(def, entry)?.let { changes.add(it) }
@@ -492,6 +505,7 @@ class SettingsViewModel @Inject constructor(
 
     // Reset UI state
     portText = portEntry.saved.toString()
+    chatCompletionsTimeoutText = chatCompletionsTimeoutEntry.saved.toString()
     validationErrors.clear()
 
     // Side effects
@@ -530,6 +544,12 @@ class SettingsViewModel @Inject constructor(
           if (port == null || port !in def.min..def.max)
             return context.getString(R.string.validation_port_range, def.min, def.max)
           null
+        } else if (def.key == "chat_completions_timeout") {
+          if (chatCompletionsTimeoutText.isBlank()) return "Response timeout is required"
+          val timeout = chatCompletionsTimeoutText.toIntOrNull()
+          if (timeout == null || timeout !in def.min..def.max)
+            return "Response timeout must be between ${def.min} and ${def.max} seconds"
+          null
         } else {
           val value = (entry as SettingEntry<Int>).current
           if (value !in def.min..def.max) {
@@ -537,13 +557,6 @@ class SettingsViewModel @Inject constructor(
             context.getString(R.string.validation_numeric_range, label, def.min, def.max)
           } else null
         }
-      }
-      is SettingDef.NumericWithUnit -> {
-        @Suppress("UNCHECKED_CAST")
-        val value = (entry as SettingEntry<Long>).current
-        if (value !in def.min..def.max) {
-          formatNumericWithUnitRangeError(def, value, context)
-        } else null
       }
       is SettingDef.NumericPlain -> {
         val value = (entry as SettingEntry<Int>).current

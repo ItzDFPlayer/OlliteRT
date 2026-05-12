@@ -189,6 +189,19 @@ val HOST_PORT = SettingDef.NumericInput(
   write = { ctx, v -> ServerPrefs.save(ctx, v) },
 )
 
+val CHAT_COMPLETIONS_TIMEOUT = SettingDef.NumericInput(
+  key = "chat_completions_timeout",
+  labelRes = R.string.settings_response_timeout_label,
+  descriptionRes = R.string.settings_response_timeout_desc,
+  card = CardId.SERVER_CONFIG,
+  default = com.ollitert.llm.server.data.CHAT_COMPLETIONS_TIMEOUT_SECONDS.toInt(),
+  prefsKey = "chat_completions_timeout_seconds",
+  min = 1,
+  max = 3600,
+  read = { ServerPrefs.getChatCompletionsTimeoutSeconds(it) },
+  write = { ctx, v -> ServerPrefs.setChatCompletionsTimeoutSeconds(ctx, v) },
+)
+
 val BEARER_TOKEN = SettingDef.Custom(
   key = "bearer_token",
   labelRes = R.string.settings_bearer_token,
@@ -627,7 +640,7 @@ val allSettingDefs: List<SettingDef> = listOf(
   WRAP_LOG_TEXT, AUTO_EXPAND_LOGS, STREAM_RESPONSE_PREVIEW, KEEP_PARTIAL_RESPONSE, COMPACT_IMAGE_DATA,
   HIDE_HEALTH_LOGS, CLEAR_LOGS_ON_STOP, CONFIRM_CLEAR_LOGS,
   // Server Config
-  HOST_PORT, BEARER_TOKEN, CORS_ORIGINS,
+  HOST_PORT, CHAT_COMPLETIONS_TIMEOUT, BEARER_TOKEN, CORS_ORIGINS,
   // Auto-Launch
   DEFAULT_MODEL, START_ON_BOOT, KEEP_ALIVE, KEEP_ALIVE_TIMEOUT, DONTKILLMYAPP,
   // Model Behaviour
@@ -682,7 +695,7 @@ val allCardDefs: List<CardDef> = listOf(
     id = CardId.SERVER_CONFIG,
     titleRes = R.string.settings_card_server_config,
     icon = CardIcon.Vector(Icons.Outlined.Tune),
-    settings = listOf(HOST_PORT, BEARER_TOKEN, CORS_ORIGINS),
+    settings = listOf(HOST_PORT, CHAT_COMPLETIONS_TIMEOUT, BEARER_TOKEN, CORS_ORIGINS),
   ),
   CardDef(
     id = CardId.AUTO_LAUNCH,

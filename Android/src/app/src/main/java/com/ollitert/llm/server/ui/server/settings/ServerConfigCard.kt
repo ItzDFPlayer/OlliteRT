@@ -98,7 +98,45 @@ internal fun ServerConfigCard(vm: SettingsViewModel, context: Context) {
       )
     }
 
-    if (vm.settingVisible(HOST_PORT.key) && vm.settingVisible(BEARER_TOKEN.key)) {
+    if (vm.settingVisible(HOST_PORT.key) && vm.settingVisible(CHAT_COMPLETIONS_TIMEOUT.key)) {
+      SettingDivider()
+    }
+
+    if (vm.settingVisible(CHAT_COMPLETIONS_TIMEOUT.key)) {
+      Text(
+        text = highlightSearchMatches(stringResource(R.string.settings_response_timeout_label), vm.searchQuery, OlliteRTPrimary),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      Spacer(modifier = Modifier.height(4.dp))
+      OutlinedTextField(
+        value = vm.chatCompletionsTimeoutText,
+        onValueChange = { input ->
+          vm.chatCompletionsTimeoutText = input.filter { it.isDigit() }.take(4)
+          vm.clearError(CHAT_COMPLETIONS_TIMEOUT.key)
+        },
+        singleLine = true,
+        isError = vm.hasError(CHAT_COMPLETIONS_TIMEOUT.key),
+        placeholder = {
+          Text(
+            stringResource(R.string.settings_response_timeout_placeholder),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+          )
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        colors = olliteTextFieldColors(isError = vm.hasError(CHAT_COMPLETIONS_TIMEOUT.key)),
+        modifier = Modifier.fillMaxWidth(),
+      )
+      Spacer(modifier = Modifier.height(4.dp))
+      Text(
+        text = stringResource(R.string.settings_response_timeout_desc),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
+
+    if (vm.settingVisible(CHAT_COMPLETIONS_TIMEOUT.key) && vm.settingVisible(BEARER_TOKEN.key)) {
       SettingDivider()
     }
 

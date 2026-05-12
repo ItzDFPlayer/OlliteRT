@@ -39,6 +39,7 @@ private const val KEY_PORT = "port"
 private const val KEY_BEARER_TOKEN = "bearer_token"
 private const val KEY_HF_TOKEN = "hf_token"
 private const val KEY_CORS_ALLOWED_ORIGINS = "cors_allowed_origins"
+private const val KEY_CHAT_COMPLETIONS_TIMEOUT_SECONDS = "chat_completions_timeout_seconds"
 private const val DEFAULT_CORS_ALLOWED_ORIGINS = "*"
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -232,6 +233,7 @@ object ServerPrefs {
 
   // Server Config
   private val PORT = IntPref(KEY_PORT, DEFAULT_PORT)
+  private val CHAT_COMPLETIONS_TIMEOUT_SECONDS = IntPref(KEY_CHAT_COMPLETIONS_TIMEOUT_SECONDS, com.ollitert.llm.server.data.CHAT_COMPLETIONS_TIMEOUT_SECONDS.toInt())
 
   // Model Config
   private val WARMUP_ENABLED = BoolPref(KEY_WARMUP_ENABLED, true)
@@ -326,6 +328,12 @@ object ServerPrefs {
 
   fun setCorsAllowedOrigins(context: Context, origins: String) {
     prefs(context).edit { putString(KEY_CORS_ALLOWED_ORIGINS, origins) }
+  }
+
+  fun getChatCompletionsTimeoutSeconds(context: Context): Int = get(context, CHAT_COMPLETIONS_TIMEOUT_SECONDS)
+
+  fun setChatCompletionsTimeoutSeconds(context: Context, timeoutSeconds: Int) {
+    prefs(context).edit { putInt(KEY_CHAT_COMPLETIONS_TIMEOUT_SECONDS, timeoutSeconds.coerceAtLeast(1)) }
   }
 
   // ══════════════════════════════════════════════════════════════════════════
