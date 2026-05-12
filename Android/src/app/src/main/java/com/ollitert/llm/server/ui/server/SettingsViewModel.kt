@@ -152,6 +152,7 @@ class SettingsViewModel @Inject constructor(
   var chatCompletionsTimeoutText by mutableStateOf(chatCompletionsTimeoutEntry.saved.toString())
   var hfTokenVisible by mutableStateOf(false)
   var showModelDropdown by mutableStateOf(false)
+  var showLanguageDropdown by mutableStateOf(false)
 
   /** Validation errors keyed by setting key. Compose-observable — reads trigger recomposition. */
   val validationErrors = mutableStateMapOf<String, String>()
@@ -209,6 +210,14 @@ class SettingsViewModel @Inject constructor(
     val def = settingDefsByKey[key]
     if (def !is SettingDef.Toggle) return null
     return entryByKey[key] as? SettingEntry<Boolean>
+  }
+
+  /** Returns the SettingEntry for a dropdown setting by key. */
+  @Suppress("UNCHECKED_CAST")
+  fun getDropdownEntry(key: String): SettingEntry<String?>? {
+    val def = settingDefsByKey[key]
+    if (def !is SettingDef.Dropdown) return null
+    return entryByKey[key] as? SettingEntry<String?>
   }
 
   /** Whether a setting is interactive (not disabled by a parent dependency).
