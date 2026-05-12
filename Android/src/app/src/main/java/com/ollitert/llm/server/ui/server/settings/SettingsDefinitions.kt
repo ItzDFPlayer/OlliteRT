@@ -100,12 +100,27 @@ val LANGUAGE = SettingDef.Dropdown(
   labelRes = R.string.settings_language_label,
   descriptionRes = R.string.settings_language_desc,
   card = CardId.GENERAL,
-  default = "en",
-  resetDefault = "en",
+  default = getSystemLanguageCode(),
+  resetDefault = getSystemLanguageCode(),
   prefsKey = "language",
   read = { ServerPrefs.getLanguage(it) },
   write = { ctx, v -> v?.let { ServerPrefs.setLanguage(ctx, it) } },
 )
+
+/**
+ * Gets the system's default language code
+ */
+private fun getSystemLanguageCode(): String {
+  val locale = java.util.Locale.getDefault()
+  val language = locale.language
+  val country = locale.country
+  
+  return when {
+    language == "zh" && (country == "CN" || country == "SG") -> "zh-rCN"
+    language in listOf("en", "es", "fr", "de", "uk") -> language
+    else -> "en" // fallback to English
+  }
+}
 
 val RESOLVE_CLIENT_HOSTNAMES = SettingDef.Toggle(
   key = "resolve_client_hostnames",

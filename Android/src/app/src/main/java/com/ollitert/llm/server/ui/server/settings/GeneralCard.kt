@@ -37,12 +37,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import java.util.Locale
 import com.ollitert.llm.server.R
 import com.ollitert.llm.server.ui.server.SettingsViewModel
 import com.ollitert.llm.server.ui.theme.OlliteRTPrimary
+import com.ollitert.llm.server.ui.LocaleManager
+
+/**
+ * Converts language code to readable display name using string resources
+ */
+@Composable
+private fun getLanguageDisplayName(languageCode: String?): String {
+  val context = LocalContext.current
+  return when (languageCode) {
+    "en" -> context.getString(R.string.language_name_en)
+    "es" -> context.getString(R.string.language_name_es)
+    "zh-rCN" -> context.getString(R.string.language_name_zh_rCN)
+    "fr" -> context.getString(R.string.language_name_fr)
+    "de" -> context.getString(R.string.language_name_de)
+    "uk" -> context.getString(R.string.language_name_uk)
+    else -> languageCode?.let { context.getString(R.string.language_name_en) } ?: context.getString(R.string.language_name_en)
+  }
+}
+
+/**
+ * Gets the system's default language code
+ */
+private fun getSystemLanguageCode(): String {
+  val locale = Locale.getDefault()
+  val language = locale.language
+  val country = locale.country
+  
+  return when {
+    language == "zh" && (country == "CN" || country == "SG") -> "zh-rCN"
+    language in listOf("en", "es", "fr", "de", "uk") -> language
+    else -> "en" // fallback to English
+  }
+}
 
 @Composable
 internal fun GeneralCard(vm: SettingsViewModel) {
+  val context = LocalContext.current
+  
   SettingsCard(
     icon = Icons.Outlined.PhoneAndroid,
     title = stringResource(R.string.settings_card_general),
@@ -58,7 +95,7 @@ internal fun GeneralCard(vm: SettingsViewModel) {
       Spacer(modifier = Modifier.height(4.dp))
       Column {
         OutlinedTextField(
-          value = vm.getDropdownEntry(LANGUAGE.key)?.current ?: "en",
+          value = getLanguageDisplayName(vm.getDropdownEntry(LANGUAGE.key)?.current),
           onValueChange = {},
           readOnly = true,
           singleLine = true,
@@ -77,22 +114,23 @@ internal fun GeneralCard(vm: SettingsViewModel) {
           onDismissRequest = { vm.showLanguageDropdown = false },
         ) {
           listOf(
-            "en" to "English",
-            "es" to "Español", 
-            "zh-rCN" to "中文 (简体)",
-            "fr" to "Français",
-            "de" to "Deutsch",
-            "uk" to "Українська"
-          ).forEach { (code, name) ->
+            "en",
+            "es", 
+            "zh-rCN",
+            "fr",
+            "de",
+            "uk"
+          ).forEach { code ->
             DropdownMenuItem(
               text = {
                 Text(
-                  name,
+                  getLanguageDisplayName(code),
                   color = if (vm.getDropdownEntry(LANGUAGE.key)?.current == code) OlliteRTPrimary else androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
                 )
               },
               onClick = {
                 vm.getDropdownEntry(LANGUAGE.key)?.update(code)
+                LocaleManager.applyLanguage(context, code)
                 vm.showLanguageDropdown = false
               },
             )

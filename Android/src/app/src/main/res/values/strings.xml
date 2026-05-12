@@ -320,6 +320,14 @@
   <string name="settings_language_label" translatable="false">Language</string>
   <string name="settings_language_desc" translatable="false">Choose app language. Requires app restart to take effect</string>
 
+  <!-- Language names -->
+  <string name="language_name_en" translatable="false">English</string>
+  <string name="language_name_es" translatable="false">Español</string>
+  <string name="language_name_zh_rCN" translatable="false">中文 (简体)</string>
+  <string name="language_name_fr" translatable="false">Français</string>
+  <string name="language_name_de" translatable="false">Deutsch</string>
+  <string name="language_name_uk" translatable="false">Українська</string>
+
   <!-- Settings: Auto-Launch &amp; Behavior card -->
   <string name="settings_card_auto_launch" translatable="false">Auto-Launch &amp; Behavior</string>
   <string name="settings_default_model_label" translatable="false">Default Model</string>

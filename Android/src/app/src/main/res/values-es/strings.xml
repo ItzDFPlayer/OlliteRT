@@ -47,5 +47,4 @@
   <string name="memory_warning_title">Advertencia de memoria</string>
   <string name="memory_warning_content">El modelo que has seleccionado puede exceder la memoria de tu dispositivo, lo que puede causar que la aplicación falle. Para la mejor experiencia, recomendamos probar un modelo más pequeño.</string>
   <string name="memory_warning_proceed_anyway">Continuar de todos modos</string>
-
 </resources>
