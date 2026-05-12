@@ -362,7 +362,13 @@ class SettingsViewModel @Inject constructor(
     bearerTokenEntry.update(if (bearerEnabledEntry.current) bearerTokenEntry.current else "")
     bearerTokenEntry.apply()
     for ((key, entry) in entryByKey) {
-      if (key != "host_port" && key != "chat_completions_timeout" && key != "bearer_token") entry.apply()
+      if (key != "host_port" && key != "chat_completions_timeout" && key != "bearer_token") {
+        entry.apply()
+        // Apply language change when language setting is saved
+        if (key == "language" && entry.isChanged) {
+          com.ollitert.llm.server.ui.LocaleManager.applyLanguage(context, entry.current as String)
+        }
+      }
     }
 
     // Re-check live server status before triggering restart — the server may have crashed

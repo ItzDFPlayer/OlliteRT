@@ -130,7 +130,6 @@ internal fun GeneralCard(vm: SettingsViewModel) {
               },
               onClick = {
                 vm.getDropdownEntry(LANGUAGE.key)?.update(code)
-                LocaleManager.applyLanguage(context, code)
                 vm.showLanguageDropdown = false
               },
             )

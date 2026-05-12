@@ -186,7 +186,23 @@ private const val KEY_STT_KEY_MIGRATION_DONE = "stt_key_migration_v1"
 // ═══════════════════════════════════════════════════════════════════════════
 
 private const val KEY_LANGUAGE = "language"
-private const val DEFAULT_LANGUAGE = "en"
+
+/**
+ * Gets the system's default language code
+ */
+private fun getSystemLanguageCode(): String {
+  val locale = java.util.Locale.getDefault()
+  val language = locale.language
+  val country = locale.country
+  
+  return when {
+    language == "zh" && (country == "CN" || country == "SG") -> "zh-rCN"
+    language in listOf("en", "es", "fr", "de", "uk") -> language
+    else -> "en" // fallback to English
+  }
+}
+
+private val DEFAULT_LANGUAGE = getSystemLanguageCode()
 
 private const val TAG = "OlliteRT.Prefs"
 
