@@ -48,16 +48,4 @@
   <string name="memory_warning_content">El modelo que has seleccionado puede exceder la memoria de tu dispositivo, lo que puede causar que la aplicación falle. Para la mejor experiencia, recomendamos probar un modelo más pequeño.</string>
   <string name="memory_warning_proceed_anyway">Continuar de todos modos</string>
 
-  <!-- Server status -->
-  <string name="server_status_running">Servidor en ejecución</string>
-  <string name="server_status_stopped">Servidor detenido</string>
-  <string name="server_status_loading">Cargando servidor</string>
-
-  <!-- Common actions -->
-  <string name="ok">Aceptar</string>
-  <string name="yes">Sí</string>
-  <string name="no">No</string>
-  <string name="retry">Reintentar</string>
-  <string name="error">Error</string>
-  <string name="success">Éxito</string>
 </resources>

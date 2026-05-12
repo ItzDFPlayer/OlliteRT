@@ -88,7 +88,7 @@ val COMPACT_IMAGE_DATA = SettingDef.Toggle(
   labelRes = R.string.settings_compact_image_data,
   descriptionRes = R.string.settings_compact_image_data_desc,
   card = CardId.GENERAL,
-  default = DEFAULT_COMPACT_IMAGE_DATA,
+  default = true,
   resetDefault = false,
   prefsKey = "compact_image_data",
   read = { ServerPrefs.isCompactImageData(it) },
@@ -100,19 +100,11 @@ val LANGUAGE = SettingDef.Dropdown(
   labelRes = R.string.settings_language_label,
   descriptionRes = R.string.settings_language_desc,
   card = CardId.GENERAL,
-  default = DEFAULT_LANGUAGE,
-  resetDefault = DEFAULT_LANGUAGE,
+  default = "en",
+  resetDefault = "en",
   prefsKey = "language",
-  options = listOf(
-    DropdownOption("en", "English"),
-    DropdownOption("es", "Español"),
-    DropdownOption("zh-rCN", "中文 (简体)"),
-    DropdownOption("fr", "Français"),
-    DropdownOption("de", "Deutsch"),
-    DropdownOption("uk", "Українська"),
-  ),
   read = { ServerPrefs.getLanguage(it) },
-  write = { ctx, v -> ServerPrefs.setLanguage(ctx, v) },
+  write = { ctx, v -> v?.let { ServerPrefs.setLanguage(ctx, it) } },
 )
 
 val RESOLVE_CLIENT_HOSTNAMES = SettingDef.Toggle(

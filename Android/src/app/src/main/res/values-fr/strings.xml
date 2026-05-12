@@ -48,16 +48,4 @@
   <string name="memory_warning_content">Le modèle que vous avez sélectionné peut dépasser la mémoire de votre appareil, ce qui peut provoquer le plantage de l\'application. Pour une meilleure expérience, nous recommandons d\'essayer un modèle plus petit.</string>
   <string name="memory_warning_proceed_anyway">Continuer quand même</string>
 
-  <!-- Server status -->
-  <string name="server_status_running">Serveur en cours d\'exécution</string>
-  <string name="server_status_stopped">Serveur arrêté</string>
-  <string name="server_status_loading">Chargement du serveur</string>
-
-  <!-- Common actions -->
-  <string name="ok">OK</string>
-  <string name="yes">Oui</string>
-  <string name="no">Non</string>
-  <string name="retry">Réessayer</string>
-  <string name="error">Erreur</string>
-  <string name="success">Succès</string>
 </resources>

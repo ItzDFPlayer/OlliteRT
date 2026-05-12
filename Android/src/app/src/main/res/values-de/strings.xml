@@ -48,16 +48,4 @@
   <string name="memory_warning_content">Das von Ihnen ausgewählte Modell kann den Speicher Ihres Geräts überschreiten, was zum App-Absturz führen kann. Für die beste Erfahrung empfehlen wir, ein kleineres Modell zu testen.</string>
   <string name="memory_warning_proceed_anyway">Trotzdem fortfahren</string>
 
-  <!-- Server status -->
-  <string name="server_status_running">Server läuft</string>
-  <string name="server_status_stopped">Server gestoppt</string>
-  <string name="server_status_loading">Server wird geladen</string>
-
-  <!-- Common actions -->
-  <string name="ok">OK</string>
-  <string name="yes">Ja</string>
-  <string name="no">Nein</string>
-  <string name="retry">Wiederholen</string>
-  <string name="error">Fehler</string>
-  <string name="success">Erfolg</string>
 </resources>

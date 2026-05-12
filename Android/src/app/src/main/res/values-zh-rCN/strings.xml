@@ -48,16 +48,4 @@
   <string name="memory_warning_content">您选择的模型可能会超出设备内存，这可能导致应用崩溃。为获得最佳体验，我们建议尝试较小的模型。</string>
   <string name="memory_warning_proceed_anyway">仍然继续</string>
 
-  <!-- Server status -->
-  <string name="server_status_running">服务器运行中</string>
-  <string name="server_status_stopped">服务器已停止</string>
-  <string name="server_status_loading">正在加载服务器</string>
-
-  <!-- Common actions -->
-  <string name="ok">确定</string>
-  <string name="yes">是</string>
-  <string name="no">否</string>
-  <string name="retry">重试</string>
-  <string name="error">错误</string>
-  <string name="success">成功</string>
 </resources>

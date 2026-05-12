@@ -48,16 +48,4 @@
   <string name="memory_warning_content">Обрана модель може перевищити пам\'ять вашого пристрою, що може призвести до збою програми. Для найкращого досвіду рекомендуємо спробувати меншу модель.</string>
   <string name="memory_warning_proceed_anyway">Продовжити попри все</string>
 
-  <!-- Server status -->
-  <string name="server_status_running">Сервер запущено</string>
-  <string name="server_status_stopped">Сервер зупинено</string>
-  <string name="server_status_loading">Завантаження сервера</string>
-
-  <!-- Common actions -->
-  <string name="ok">Гаразд</string>
-  <string name="yes">Так</string>
-  <string name="no">Ні</string>
-  <string name="retry">Повторити спробу</string>
-  <string name="error">Помилка</string>
-  <string name="success">Успіх</string>
 </resources>
