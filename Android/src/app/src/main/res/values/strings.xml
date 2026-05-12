@@ -93,6 +93,10 @@
     <item quantity="one">%d model</item>
     <item quantity="other">%d models</item>
   </plurals>
+  <plurals name="repo_model_count" translatable="false">
+    <item quantity="one">%1$d model</item>
+    <item quantity="other">%1$d models</item>
+  </plurals>
 
   <!-- Accessibility content descriptions -->
   <string name="cd_import_model_button">Import model</string>
