@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 Google LLC
+  Modifications Copyright 2025-2026 @NightMean (https://github.com/NightMean)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <!-- General UI strings -->
+  <string name="all">Tous</string>
+  <string name="baseline">Ligne de base</string>
+  <string name="basic_info">Informations de base</string>
+  <string name="benchmark">Test de performance</string>
+  <string name="cancel">Annuler</string>
+  <string name="close">Fermer</string>
+  <string name="copy">Copier</string>
+  <string name="delete">Supprimer</string>
+  <string name="dismiss">Ignorer</string>
+  <string name="download">Télécharger</string>
+  <string name="continue_button_label">Continuer</string>
+
+  <!-- Settings strings -->
+  <string name="settings_card_server_config">Configuration du serveur</string>
+  <string name="settings_host_port_label">Port d\'hôte (1024–65535)</string>
+  <string name="settings_host_port_placeholder">8000</string>
+  <string name="settings_host_port_desc">Par défaut : 8000. Nécessite un redémarrage du serveur pour prendre effet</string>
+  <string name="settings_response_timeout_label">Délai d\'attente de réponse (secondes)</string>
+  <string name="settings_response_timeout_placeholder">240</string>
+  <string name="settings_response_timeout_desc">Par défaut : 240. Temps d\'attente maximum pour les réponses chat/completions. Nécessite un redémarrage du serveur pour prendre effet</string>
+  <string name="settings_bearer_token">Exiger un jeton Bearer</string>
+  <string name="settings_bearer_token_desc">Protéger l\'API avec un jeton Bearer. Les clients doivent l\'inclure dans l\'en-tête d\'autorisation</string>
+  <string name="settings_cors_label">Origines CORS autorisées</string>
+  <string name="settings_cors_desc">Origines autorisées à faire des requêtes d\'origine croisée. Utilisez * pour autoriser toutes, URLs séparées par des virgules pour des origines spécifiques (ex. http://localhost:3000, https://mon-app.com), ou laissez vide pour désactiver CORS</string>
+
+  <!-- Model management -->
+  <string name="download">Télécharger</string>
+  <string name="delete">Supprimer</string>
+  <string name="memory_warning_title">Avertissement de mémoire</string>
+  <string name="memory_warning_content">Le modèle que vous avez sélectionné peut dépasser la mémoire de votre appareil, ce qui peut provoquer le plantage de l\'application. Pour une meilleure expérience, nous recommandons d\'essayer un modèle plus petit.</string>
+  <string name="memory_warning_proceed_anyway">Continuer quand même</string>
+
+  <!-- Server status -->
+  <string name="server_status_running">Serveur en cours d\'exécution</string>
+  <string name="server_status_stopped">Serveur arrêté</string>
+  <string name="server_status_loading">Chargement du serveur</string>
+
+  <!-- Common actions -->
+  <string name="ok">OK</string>
+  <string name="yes">Oui</string>
+  <string name="no">Non</string>
+  <string name="retry">Réessayer</string>
+  <string name="error">Erreur</string>
+  <string name="success">Succès</string>
+</resources>

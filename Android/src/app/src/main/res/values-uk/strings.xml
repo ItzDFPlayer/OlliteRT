@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 Google LLC
+  Modifications Copyright 2025-2026 @NightMean (https://github.com/NightMean)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <!-- General UI strings -->
+  <string name="all">Усі</string>
+  <string name="baseline">Базова лінія</string>
+  <string name="basic_info">Базова інформація</string>
+  <string name="benchmark">Тест продуктивності</string>
+  <string name="cancel">Скасувати</string>
+  <string name="close">Закрити</string>
+  <string name="copy">Копіювати</string>
+  <string name="delete">Видалити</string>
+  <string name="dismiss">Відхилити</string>
+  <string name="download">Завантажити</string>
+  <string name="continue_button_label">Продовжити</string>
+
+  <!-- Settings strings -->
+  <string name="settings_card_server_config">Конфігурація сервера</string>
+  <string name="settings_host_port_label">Порт сервера (1024–65535)</string>
+  <string name="settings_host_port_placeholder">8000</string>
+  <string name="settings_host_port_desc">За замовчуванням: 8000. Потребує перезапуску сервера для застосування змін</string>
+  <string name="settings_response_timeout_label">Час очікування відповіді (секунди)</string>
+  <string name="settings_response_timeout_placeholder">240</string>
+  <string name="settings_response_timeout_desc">За замовчуванням: 240. Максимальний час очікування для відповідей chat/completions. Потребує перезапуску сервера для застосування змін</string>
+  <string name="settings_bearer_token">Вимагати токен носія</string>
+  <string name="settings_bearer_token_desc">Захистити API токеном носія. Клієнти повинні включати його в заголовку авторизації</string>
+  <string name="settings_cors_label">Дозволені джерела CORS</string>
+  <string name="settings_cors_desc">Джерела, дозволені для міжсайтових запитів. Використовуйте * для дозволу всіх, URL, розділені комами для конкретних джерел (напр. http://localhost:3000, https://my-app.com), або залиште порожнім для відключення CORS</string>
+
+  <!-- Model management -->
+  <string name="download">Завантажити</string>
+  <string name="delete">Видалити</string>
+  <string name="memory_warning_title">Попередження про пам\'ять</string>
+  <string name="memory_warning_content">Обрана модель може перевищити пам\'ять вашого пристрою, що може призвести до збою програми. Для найкращого досвіду рекомендуємо спробувати меншу модель.</string>
+  <string name="memory_warning_proceed_anyway">Продовжити попри все</string>
+
+  <!-- Server status -->
+  <string name="server_status_running">Сервер запущено</string>
+  <string name="server_status_stopped">Сервер зупинено</string>
+  <string name="server_status_loading">Завантаження сервера</string>
+
+  <!-- Common actions -->
+  <string name="ok">Гаразд</string>
+  <string name="yes">Так</string>
+  <string name="no">Ні</string>
+  <string name="retry">Повторити спробу</string>
+  <string name="error">Помилка</string>
+  <string name="success">Успіх</string>
+</resources>

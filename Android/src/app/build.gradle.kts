@@ -62,6 +62,9 @@ android {
     versionCode = resolvedVersionCode
     versionName = findProperty("APP_VERSION_NAME") as String
 
+    // Configure supported locales
+    resourceConfigurations += setOf("en", "es", "zh-rCN", "fr", "de", "uk")
+
     // Needed for HuggingFace auth workflows.
     // Use the scheme of the "Redirect URLs" in HuggingFace app.
     // Updated per-flavor below to match applicationId (with suffix).

@@ -16,32 +16,32 @@
 -->
 
 <resources>
-  <string name="all" translatable="false">All</string>
-  <string name="baseline" translatable="false">Baseline</string>
-  <string name="basic_info" translatable="false">Basic info</string>
-  <string name="benchmark" translatable="false">Benchmark</string>
+  <string name="all" translatable="true">All</string>
+  <string name="baseline" translatable="true">Baseline</string>
+  <string name="basic_info" translatable="true">Basic info</string>
+  <string name="benchmark" translatable="true">Benchmark</string>
   <string name="benchmark_comparison_help_title" translatable="false">How to compare benchmark runs</string>
-  <string name="benchmark_comparison_help_content" translatable="false">Compare benchmark runs by tapping the **Baseline** chip on any run result card to set the run as the comparison baseline. We\'ll automatically calculate and display the percentage differences in **all other** run result cards.</string>
-  <string name="benchmark_model" translatable="false">Benchmark model</string>
-  <string name="benchmark_results" translatable="false">Benchmark results</string>
-  <string name="benchmark_no_results" translatable="false">No benchmark results</string>
-  <string name="benchmark_tokens_limit_message" translatable="false">Ensure that the sum of prefill and decode tokens remains under the model\'s maximum token limit (%d vs %d)</string>
+  <string name="benchmark_comparison_help_content" translatable="true">Compare benchmark runs by tapping the **Baseline** chip on any run result card to set the run as the comparison baseline. We\'ll automatically calculate and display the percentage differences in **all other** run result cards.</string>
+  <string name="benchmark_model" translatable="true">Benchmark model</string>
+  <string name="benchmark_results" translatable="true">Benchmark results</string>
+  <string name="benchmark_no_results" translatable="true">No benchmark results</string>
+  <string name="benchmark_tokens_limit_message" translatable="true">Ensure that the sum of prefill and decode tokens remains under the model\'s maximum token limit (%d vs %d)</string>
   <string name="badge_best_overall" translatable="false">Best overall</string>
   <string name="badge_new" translatable="false">New</string>
   <string name="badge_fastest" translatable="false">Fastest</string>
-  <string name="cancel" translatable="false">Cancel</string>
+  <string name="cancel" translatable="true">Cancel</string>
   <string name="checking_access" translatable="false">Checking access...</string>
-  <string name="close" translatable="false">Close</string>
+  <string name="close" translatable="true">Close</string>
   <string name="collapse_all" translatable="false">Collapse all</string>
-  <string name="continue_button_label" translatable="false">Continue</string>
-  <string name="copy" translatable="false">Copy</string>
-  <string name="delete" translatable="false">Delete</string>
-  <string name="delete_benchmark_result_dialog_title" translatable="false">Delete benchmark result</string>
-  <string name="delete_benchmark_result_dialog_content" translatable="false">Are you sure you want to delete the benchmark result?</string>
-  <string name="confirm_delete_model_dialog_title" translatable="false">Delete download</string>
-  <string name="confirm_delete_model_dialog_content" translatable="false">Are you sure you want to delete the downloaded model \"%1$s\"?</string>
-  <string name="dismiss" translatable="false">Dismiss</string>
-  <string name="download" translatable="false">Download</string>
+  <string name="continue_button_label" translatable="true">Continue</string>
+  <string name="copy" translatable="true">Copy</string>
+  <string name="delete" translatable="true">Delete</string>
+  <string name="delete_benchmark_result_dialog_title" translatable="true">Delete benchmark result</string>
+  <string name="delete_benchmark_result_dialog_content" translatable="true">Are you sure you want to delete the benchmark result?</string>
+  <string name="confirm_delete_model_dialog_title" translatable="true">Delete download</string>
+  <string name="confirm_delete_model_dialog_content" translatable="true">Are you sure you want to delete the downloaded model \"%1$s\"?</string>
+  <string name="dismiss" translatable="true">Dismiss</string>
+  <string name="download" translatable="true">Download</string>
   <string name="expand_all" translatable="false">Expand all</string>
   <string name="learn_more" translatable="false">Learn more and see model license</string>
   <string name="memory_warning_content" translatable="false">The model you\'ve selected may exceed your device\'s memory, which can cause the app to crash. For the best experience, we recommend trying a smaller model.</string>
@@ -313,6 +313,8 @@
   <string name="settings_response_timeout_label" translatable="false">Response Timeout (seconds)</string>
   <string name="settings_response_timeout_placeholder" translatable="false">240</string>
   <string name="settings_response_timeout_desc" translatable="false">Default: 240. Maximum time to wait for chat/completions responses. Requires server restart to take effect</string>
+  <string name="settings_language_label" translatable="false">Language</string>
+  <string name="settings_language_desc" translatable="false">Choose app language. Requires app restart to take effect</string>
 
   <!-- Settings: Auto-Launch &amp; Behavior card -->
   <string name="settings_card_auto_launch" translatable="false">Auto-Launch &amp; Behavior</string>

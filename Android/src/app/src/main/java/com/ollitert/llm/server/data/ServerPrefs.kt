@@ -178,8 +178,15 @@ private const val KEY_CORRUPTED_DATASTORES = "corrupted_datastores"
 
 // TODO: Remove after 1.0.0 — migration from 0.9.0-beta keys (model.name → model.prefsKey).
 private const val KEY_PREFS_KEY_MIGRATION_DONE = "prefs_key_migration_v1"
-// TODO: Remove after 1.0.0 — migration from 0.9.0 keys (ha_stt_* → stt_*).
+// TODO: Remove after 1.0.0 — migration from 0.9.0-beta keys (ha_stt_* → stt_*).
 private const val KEY_STT_KEY_MIGRATION_DONE = "stt_key_migration_v1"
+
+// ═══════════════════════════════════════════════════════════════════════════
+// § Language Settings
+// ═══════════════════════════════════════════════════════════════════════════
+
+private const val KEY_LANGUAGE = "language"
+private const val DEFAULT_LANGUAGE = "en"
 
 private const val TAG = "OlliteRT.Prefs"
 
@@ -234,6 +241,9 @@ object ServerPrefs {
   // Server Config
   private val PORT = IntPref(KEY_PORT, DEFAULT_PORT)
   private val CHAT_COMPLETIONS_TIMEOUT_SECONDS = IntPref(KEY_CHAT_COMPLETIONS_TIMEOUT_SECONDS, com.ollitert.llm.server.data.CHAT_COMPLETIONS_TIMEOUT_SECONDS.toInt())
+
+  // Language Settings
+  private val LANGUAGE = StringPref(KEY_LANGUAGE, DEFAULT_LANGUAGE)
 
   // Model Config
   private val WARMUP_ENABLED = BoolPref(KEY_WARMUP_ENABLED, true)
@@ -334,6 +344,13 @@ object ServerPrefs {
 
   fun setChatCompletionsTimeoutSeconds(context: Context, timeoutSeconds: Int) {
     prefs(context).edit { putInt(KEY_CHAT_COMPLETIONS_TIMEOUT_SECONDS, timeoutSeconds.coerceAtLeast(1)) }
+  }
+
+  // ── Language Settings ──────────────────────────────────────────────
+  fun getLanguage(context: Context): String = get(context, LANGUAGE)
+
+  fun setLanguage(context: Context, language: String) {
+    set(context, LANGUAGE, language)
   }
 
   // ══════════════════════════════════════════════════════════════════════════

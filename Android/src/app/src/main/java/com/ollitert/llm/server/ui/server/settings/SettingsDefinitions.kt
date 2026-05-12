@@ -88,10 +88,31 @@ val COMPACT_IMAGE_DATA = SettingDef.Toggle(
   labelRes = R.string.settings_compact_image_data,
   descriptionRes = R.string.settings_compact_image_data_desc,
   card = CardId.GENERAL,
-  default = true,
+  default = DEFAULT_COMPACT_IMAGE_DATA,
+  resetDefault = false,
   prefsKey = "compact_image_data",
   read = { ServerPrefs.isCompactImageData(it) },
   write = { ctx, v -> ServerPrefs.setCompactImageData(ctx, v) },
+)
+
+val LANGUAGE = SettingDef.Dropdown(
+  key = "language",
+  labelRes = R.string.settings_language_label,
+  descriptionRes = R.string.settings_language_desc,
+  card = CardId.GENERAL,
+  default = DEFAULT_LANGUAGE,
+  resetDefault = DEFAULT_LANGUAGE,
+  prefsKey = "language",
+  options = listOf(
+    DropdownOption("en", "English"),
+    DropdownOption("es", "Español"),
+    DropdownOption("zh-rCN", "中文 (简体)"),
+    DropdownOption("fr", "Français"),
+    DropdownOption("de", "Deutsch"),
+    DropdownOption("uk", "Українська"),
+  ),
+  read = { ServerPrefs.getLanguage(it) },
+  write = { ctx, v -> ServerPrefs.setLanguage(ctx, v) },
 )
 
 val RESOLVE_CLIENT_HOSTNAMES = SettingDef.Toggle(
@@ -638,7 +659,7 @@ val allSettingDefs: List<SettingDef> = listOf(
   // General
   KEEP_SCREEN_AWAKE, SHOW_MODEL_RECOMMENDATIONS, RESOLVE_CLIENT_HOSTNAMES,
   WRAP_LOG_TEXT, AUTO_EXPAND_LOGS, STREAM_RESPONSE_PREVIEW, KEEP_PARTIAL_RESPONSE, COMPACT_IMAGE_DATA,
-  HIDE_HEALTH_LOGS, CLEAR_LOGS_ON_STOP, CONFIRM_CLEAR_LOGS,
+  HIDE_HEALTH_LOGS, CLEAR_LOGS_ON_STOP, CONFIRM_CLEAR_LOGS, LANGUAGE,
   // Server Config
   HOST_PORT, CHAT_COMPLETIONS_TIMEOUT, BEARER_TOKEN, CORS_ORIGINS,
   // Auto-Launch
@@ -688,7 +709,7 @@ val allCardDefs: List<CardDef> = listOf(
     settings = listOf(
       KEEP_SCREEN_AWAKE, SHOW_MODEL_RECOMMENDATIONS, RESOLVE_CLIENT_HOSTNAMES,
       WRAP_LOG_TEXT, AUTO_EXPAND_LOGS, STREAM_RESPONSE_PREVIEW, KEEP_PARTIAL_RESPONSE, COMPACT_IMAGE_DATA,
-      HIDE_HEALTH_LOGS, CLEAR_LOGS_ON_STOP, CONFIRM_CLEAR_LOGS,
+      HIDE_HEALTH_LOGS, CLEAR_LOGS_ON_STOP, CONFIRM_CLEAR_LOGS, LANGUAGE,
     ),
   ),
   CardDef(
