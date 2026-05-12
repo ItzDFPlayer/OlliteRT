@@ -47,13 +47,4 @@
   <string name="memory_warning_title">Speicherwarnung</string>
   <string name="memory_warning_content">Das von Ihnen ausgewählte Modell kann den Speicher Ihres Geräts überschreiten, was zum App-Absturz führen kann. Für die beste Erfahrung empfehlen wir, ein kleineres Modell zu testen.</string>
   <string name="memory_warning_proceed_anyway">Trotzdem fortfahren</string>
-
-  <!-- Language names -->
-  <string name="language_name_en">English</string>
-  <string name="language_name_es">Español</string>
-  <string name="language_name_zh_rCN">中文 (简体)</string>
-  <string name="language_name_fr">Français</string>
-  <string name="language_name_de">Deutsch</string>
-  <string name="language_name_uk">Українська</string>
-
 </resources>
