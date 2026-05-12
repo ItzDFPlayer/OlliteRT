@@ -507,20 +507,6 @@
   <string name="status_value_success_rate">%1$s (%2$d пом)</string>
   <string name="status_value_no_data">—</string>
 
-  <!-- Status: Advanced metric labels -->
-  <string name="status_metric_prefill_speed">Швидкість префікса</string>
-  <string name="status_metric_avg_throughput">Сер. пропускна здатність</string>
-  <string name="status_metric_inter_token_latency">Затримка між токенами</string>
-  <string name="status_metric_last_latency">Остання затримка</string>
-  <string name="status_metric_avg_latency">Середня затримка</string>
-  <string name="status_metric_peak_latency">Пікова затримка</string>
-
-  <!-- Status: Metric value formats -->
-  <string name="status_value_ms">%1$d мс</string>
-  <string name="status_value_throughput">%1$s т/с</string>
-  <string name="status_value_success_rate">%1$s (%2$d пом.)</string>
-  <string name="status_value_no_data">—</string>
-
   <!-- Status: Reload dialog -->
   <string name="status_dialog_reload_title">Перезавантажити модель</string>
   <string name="status_dialog_reload_body">Це перезапустить сервер і заново завантажить %1$s. Усі поточні запити буде перервано.</string>
