@@ -44,8 +44,6 @@
   <string name="settings_cors_desc">Джерела, дозволені для міжсайтових запитів. Використовуйте * для дозволу всіх, URL, розділені комами для конкретних джерел (напр. http://localhost:3000, https://my-app.com), або залиште порожнім для відключення CORS</string>
 
   <!-- Model management -->
-  <string name="download">Завантажити</string>
-  <string name="delete">Видалити</string>
   <string name="memory_warning_title">Попередження про пам\'ять</string>
   <string name="memory_warning_content">Обрана модель може перевищити пам\'ять вашого пристрою, що може призвести до збою програми. Для найкращого досвіду рекомендуємо спробувати меншу модель.</string>
   <string name="memory_warning_proceed_anyway">Продовжити попри все</string>

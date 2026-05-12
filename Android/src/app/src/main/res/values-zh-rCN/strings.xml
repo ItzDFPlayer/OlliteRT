@@ -44,8 +44,6 @@
   <string name="settings_cors_desc">允许进行跨域请求的源。使用*允许所有，用逗号分隔的URL指定特定源（例如：http://localhost:3000, https://my-app.com），或留空禁用CORS</string>
 
   <!-- Model management -->
-  <string name="download">下载</string>
-  <string name="delete">删除</string>
   <string name="memory_warning_title">内存警告</string>
   <string name="memory_warning_content">您选择的模型可能会超出设备内存，这可能导致应用崩溃。为获得最佳体验，我们建议尝试较小的模型。</string>
   <string name="memory_warning_proceed_anyway">仍然继续</string>

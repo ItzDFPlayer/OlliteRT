@@ -44,8 +44,6 @@
   <string name="settings_cors_desc">Orígenes permitidos para hacer solicitudes de origen cruzado. Usa * para permitir todos, URLs separadas por comas para orígenes específicos (ej. http://localhost:3000, https://mi-app.com), o déjalo en blanco para desactivar CORS</string>
 
   <!-- Model management -->
-  <string name="download">Descargar</string>
-  <string name="delete">Eliminar</string>
   <string name="memory_warning_title">Advertencia de memoria</string>
   <string name="memory_warning_content">El modelo que has seleccionado puede exceder la memoria de tu dispositivo, lo que puede causar que la aplicación falle. Para la mejor experiencia, recomendamos probar un modelo más pequeño.</string>
   <string name="memory_warning_proceed_anyway">Continuar de todos modos</string>

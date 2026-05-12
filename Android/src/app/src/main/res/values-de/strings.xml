@@ -44,8 +44,6 @@
   <string name="settings_cors_desc">Ursprünge, die Cross-Origin-Anfragen stellen dürfen. Verwenden Sie * für alle, kommagetrennte URLs für spezifische Ursprünge (z.B. http://localhost:3000, https://meine-app.com), oder leer lassen, um CORS zu deaktivieren</string>
 
   <!-- Model management -->
-  <string name="download">Herunterladen</string>
-  <string name="delete">Löschen</string>
   <string name="memory_warning_title">Speicherwarnung</string>
   <string name="memory_warning_content">Das von Ihnen ausgewählte Modell kann den Speicher Ihres Geräts überschreiten, was zum App-Absturz führen kann. Für die beste Erfahrung empfehlen wir, ein kleineres Modell zu testen.</string>
   <string name="memory_warning_proceed_anyway">Trotzdem fortfahren</string>
