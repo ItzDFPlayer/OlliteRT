@@ -298,7 +298,13 @@ fun createLlmChatConfigsForNpuModel(
   accelerators: List<Accelerator> = DEFAULT_ACCELERATORS,
 ): List<Config> {
   return listOf(
-    LabelConfig(key = ConfigKeys.MAX_TOKENS, defaultValue = "$defaultMaxToken"),
+    NumberSliderConfig(
+      key = ConfigKeys.MAX_TOKENS,
+      sliderMin = MIN_MAX_TOKENS.toFloat(),
+      sliderMax = defaultMaxToken.toFloat(),
+      defaultValue = defaultMaxToken.toFloat(),
+      valueType = ValueType.INT,
+    ),
     SegmentedButtonConfig(
       key = ConfigKeys.ACCELERATOR,
       defaultValue = accelerators.sortedBy { preferredAcceleratorOrder(it) }.first().label,
