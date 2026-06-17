@@ -296,8 +296,10 @@ fun createLlmChatConfigs(
 fun createLlmChatConfigsForNpuModel(
   defaultMaxToken: Int = DEFAULT_MAX_TOKEN,
   accelerators: List<Accelerator> = DEFAULT_ACCELERATORS,
+  supportThinking: Boolean = false,
+  supportSpeculativeDecoding: Boolean = false,
 ): List<Config> {
-  return listOf(
+  val configs = listOf(
     NumberSliderConfig(
       key = ConfigKeys.MAX_TOKENS,
       sliderMin = MIN_MAX_TOKENS.toFloat(),
@@ -310,5 +312,13 @@ fun createLlmChatConfigsForNpuModel(
       defaultValue = accelerators.sortedBy { preferredAcceleratorOrder(it) }.first().label,
       options = accelerators.sortedBy { preferredAcceleratorOrder(it) }.map { it.label },
     ),
-  )
+  ).toMutableList()
+
+  if (supportThinking) {
+    configs.add(BooleanSwitchConfig(key = ConfigKeys.ENABLE_THINKING, defaultValue = false, needReinitialization = false))
+  }
+  if (supportSpeculativeDecoding) {
+    configs.add(BooleanSwitchConfig(key = ConfigKeys.ENABLE_SPECULATIVE_DECODING, defaultValue = false, requiresModelUpdate = true))
+  }
+  return configs
 }

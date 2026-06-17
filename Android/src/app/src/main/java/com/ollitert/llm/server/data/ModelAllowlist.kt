@@ -166,6 +166,8 @@ data class AllowedModel(
           createLlmChatConfigsForNpuModel(
             defaultMaxToken = llmMaxToken,
             accelerators = accelerators,
+            supportThinking = llmSupportThinking == true,
+            supportSpeculativeDecoding = llmSupportSpeculativeDecoding == true,
           )
         } else {
           createLlmChatConfigs(
