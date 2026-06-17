@@ -159,6 +159,301 @@
         "maxTokens": 4096,
         "accelerators": "gpu,cpu"
       }
+    },
+    {
+      "name": "Gemma-4-E2B-it-sm8750",
+      "modelId": "litert-community/gemma-4-E2B-it-litert-lm",
+      "modelFile": "gemma-4-E2B-it_qualcomm_sm8750.litertlm",
+      "description": "Gemma 4 E2B optimised for the Qualcomm Snapdragon 8 Elite (SM8750) NPU. **Snapdragon 8 Elite users will see significant performance gains over the standard GPU build.** Supports multi-modality input with up to 32K context length.",
+      "sizeInBytes": 3016294400,
+      "minDeviceMemoryInGb": 8,
+      "commitHash": "6e5c4f1e395deb959c494953478fa5cec4b8008f",
+      "llmSupportThinking": true,
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 32000,
+        "maxTokens": 4000,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-4-E2B-it-qcs8275",
+      "modelId": "litert-community/gemma-4-E2B-it-litert-lm",
+      "modelFile": "gemma-4-E2B-it_qualcomm_qcs8275.litertlm",
+      "description": "Gemma 4 E2B optimised for the Qualcomm QCS8275 NPU. **QCS8275 users will see significant performance gains over the standard GPU build.** Supports multi-modality input with up to 32K context length.",
+      "sizeInBytes": 3294593024,
+      "minDeviceMemoryInGb": 8,
+      "commitHash": "120ed4dc36b76aa58234cbb37c71e578bb9016c3",
+      "llmSupportThinking": true,
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 32000,
+        "maxTokens": 4000,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-4-E2B-it-Tensor-G5",
+      "modelId": "litert-community/gemma-4-E2B-it-litert-lm",
+      "modelFile": "gemma-4-E2B-it_Google_Tensor_G5.litertlm",
+      "description": "Gemma 4 E2B optimised for the Google Tensor G5 (Pixel 10) NPU. **Pixel 10 users will see significant performance gains over the standard GPU build.** Supports multi-modality input with up to 32K context length.",
+      "sizeInBytes": 3953110901,
+      "minDeviceMemoryInGb": 12,
+      "commitHash": "3f250541aff494231036164d89603de72cb6dc70",
+      "llmSupportThinking": true,
+      "llmSupportSpeculativeDecoding": true,
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 32000,
+        "maxTokens": 4000,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-4-12B-it",
+      "modelId": "litert-community/gemma-4-12B-it-litert-lm",
+      "modelFile": "gemma-4-12B-it.litertlm",
+      "description": "Gemma 4 12B — the largest Gemma 4 model, for flagship devices with ample RAM (~6.5 GB download). The current LiteRT-LM build supports text input with up to 32K context length and runs on GPU. Audio and image input are planned in a future model update.",
+      "sizeInBytes": 6547589312,
+      "minDeviceMemoryInGb": 16,
+      "commitHash": "44cf85a326f79b814fa86a60af414c042755b43a",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 32000,
+        "maxTokens": 4000,
+        "accelerators": "gpu"
+      }
+    },
+    {
+      "name": "MobileActions-270M",
+      "modelId": "jegly/mobile_actions_q8_ekv1024.litertlm",
+      "modelFile": "mobile_actions_q8_ekv1024.litertlm",
+      "url": "https://huggingface.co/jegly/mobile_actions_q8_ekv1024.litertlm/resolve/main/mobile_actions_q8_ekv1024.litertlm?download=true",
+      "description": "Fine-tuned Function Gemma 270M model for Mobile Actions.",
+      "sizeInBytes": 288964608,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "491f610",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 0.0,
+        "maxTokens": 1024,
+        "accelerators": "cpu"
+      }
+    },
+    {
+      "name": "TinyLlama-1.1B-Chat",
+      "modelId": "litert-community/TinyLlama-1.1B-Chat-v1.0",
+      "modelFile": "TinyLlama-1.1B-Chat-v1.0_multi-prefill-seq_q8_ekv1280.task",
+      "description": "TinyLlama 1.1B Chat (int8) — a small, very fast text chat model. ~156 tok/s prefill / ~26 tok/s decode on a Samsung S24 Ultra (CPU/XNNPACK), ~1.1 GB on disk. 1280-token context. Text only.",
+      "sizeInBytes": 1148331545,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "7ad278008521e0c4c78192550a698d87a22f395c",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 0.8,
+        "maxContextLength": 1280,
+        "maxTokens": 1280,
+        "accelerators": "cpu,gpu"
+      }
+    },
+    {
+      "name": "Phi-4-mini-instruct",
+      "modelId": "litert-community/Phi-4-mini-instruct",
+      "modelFile": "Phi-4-mini-instruct_multi-prefill-seq_q8_ekv4096.litertlm",
+      "description": "Microsoft Phi-4-mini-instruct (3.8B, int8) — a capable text-only instruct model. **8 GB+ RAM recommended** — won't load on 6 GB devices (e.g. Pixel 6a). ~314 tok/s prefill / ~10 tok/s decode on GPU (Samsung S24 Ultra), ~3.9 GB on disk, 4096-token context. License: MIT.",
+      "sizeInBytes": 3910090752,
+      "minDeviceMemoryInGb": 8,
+      "commitHash": "8cd368be75fdb94d5a6f6f5b40f1ab22a6c2543e",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 0.8,
+        "maxContextLength": 4096,
+        "maxTokens": 4096,
+        "accelerators": "gpu,cpu"
+      }
+    },
+    {
+      "name": "TinySwallow-1.5B-Instruct",
+      "modelId": "litert-community/TinySwallow-1.5B-Instruct",
+      "modelFile": "TinySwallow-1.5B-Instruct.litertlm",
+      "description": "TinySwallow 1.5B Instruct (SakanaAI) — a compact Japanese/English bilingual text model, distilled from Qwen2.5-1.5B. ~1.5 GB on disk. Text only. License: Apache 2.0.",
+      "sizeInBytes": 1567604736,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "95b421352bcbd4324630b516374364383cf1722e",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 0.8,
+        "maxContextLength": 4096,
+        "maxTokens": 4096,
+        "accelerators": "gpu,cpu"
+      }
+    },
+    {
+      "name": "VibeThinker-1.5B",
+      "modelId": "litert-community/VibeThinker-1.5B",
+      "modelFile": "VibeThinker-1.5B.litertlm",
+      "description": "VibeThinker 1.5B (WeiboAI) — a compact reasoning model specialised in math and competitive coding (AIME / HMMT / Codeforces), punching well above its size. Not a general-purpose chat model. ~1.5 GB on disk. Text only. License: MIT.",
+      "sizeInBytes": 1567604736,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "10a5f89bb85a97b58585b0d962205dfda0fdac82",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 0.6,
+        "maxContextLength": 4096,
+        "maxTokens": 4096,
+        "accelerators": "gpu,cpu"
+      }
+    },
+    {
+      "name": "Qwen3-8B",
+      "modelId": "litert-community/Qwen3-8B",
+      "modelFile": "qwen3_8b_channelwise_int8_float32kv.litertlm",
+      "description": "Qwen3 8B (channel-wise int8) — a large, highly capable text model. ~8.3 GB download; needs a high-RAM device (12 GB+) for the 8B weights + float32 KV cache. Decode is slow on phones at this size. Text only. License: Apache 2.0.",
+      "sizeInBytes": 8307720192,
+      "minDeviceMemoryInGb": 12,
+      "commitHash": "9984555e5866f46855d1e231e30241c7ee0bb369",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 0.7,
+        "maxContextLength": 1280,
+        "maxTokens": 1280,
+        "accelerators": "gpu,cpu"
+      }
+    },
+    {
+      "name": "Gemma-3-1B-IT-Tensor-G5",
+      "modelId": "jegly/mirror",
+      "modelFile": "Gemma3-1B-IT_q8_ekv1280_Google_Tensor_G5.litertlm",
+      "description": "Gemma 3 1B optimised for the Google Tensor G5 (Pixel 10) NPU/TPU. **Pixel 10 users see major speedups over the GPU build.** Text, ~1.25K context. Subject to Google's Gemma Terms of Use and Prohibited Use Policy.",
+      "sizeInBytes": 1678542365,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "main",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 1280,
+        "maxTokens": 1280,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-3n-E2B-it-MediaTek",
+      "modelId": "jegly/mirror",
+      "modelFile": "gemma-3n-E2B-it-int4.mediatek.mt6993.litertlm",
+      "description": "Gemma 3n E2B optimised for the MediaTek Dimensity 9400 (MT6993) NPU. Multimodal (text, image, audio), up to 32K context. **MediaTek users see major NPU speedups.** Subject to Google's Gemma Terms of Use and Prohibited Use Policy.",
+      "sizeInBytes": 4330192896,
+      "minDeviceMemoryInGb": 8,
+      "commitHash": "main",
+      "llmSupportImage": true,
+      "llmSupportAudio": true,
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 32000,
+        "maxTokens": 4000,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Qwen3-0.6B-MediaTek",
+      "modelId": "jegly/mirror",
+      "modelFile": "Qwen3-0.6B.mediatek.mt6993.litertlm",
+      "description": "Qwen3 0.6B optimised for the MediaTek Dimensity 9400 (MT6993) NPU (Apache-2.0). a16w8 NPU build, 4K context. **MediaTek users see NPU speedups.**",
+      "sizeInBytes": 1202913280,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "main",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 4096,
+        "maxTokens": 4096,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-3-1B-IT-Snapdragon",
+      "modelId": "jegly/mirror",
+      "modelFile": "Gemma3-1B-IT_q4_ekv1280_sm8750.litertlm",
+      "description": "Gemma 3 1B optimised for Snapdragon NPUs (Snapdragon 8 Gen 1 through 8 Elite 2). Snapdragon users will see major performance gains over the GPU build. Text only, 1280-token context. Subject to Google's Gemma Terms of Use and Prohibited Use Policy.",
+      "sizeInBytes": 689291264,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "main",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 1280,
+        "maxTokens": 1280,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-3-1B-IT-MediaTek",
+      "modelId": "jegly/mirror",
+      "modelFile": "Gemma3-1B-IT_q4_ekv1280_mt6993.litertlm",
+      "description": "Gemma 3 1B optimised for MediaTek Dimensity NPUs (Dimensity 9300+, 9400 Pro, 9400+). MediaTek users will see major performance gains over the GPU build. Text only, 1280-token context. Subject to Google's Gemma Terms of Use and Prohibited Use Policy.",
+      "sizeInBytes": 1020411904,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "main",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 1280,
+        "maxTokens": 1280,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-3-270M-Snapdragon",
+      "modelId": "jegly/mirror",
+      "modelFile": "gemma3-270m-it-q8.qualcomm.sm8750.litertlm",
+      "description": "Gemma 3 270M optimised for Snapdragon NPUs (Snapdragon 8 Gen 1 through 8 Elite 2). Ultra-fast, ~460 MB download. Text only. Subject to Google's Gemma Terms of Use and Prohibited Use Policy.",
+      "sizeInBytes": 461340672,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "main",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 4096,
+        "maxTokens": 4096,
+        "accelerators": "npu"
+      }
+    },
+    {
+      "name": "Gemma-3-270M-MediaTek",
+      "modelId": "jegly/mirror",
+      "modelFile": "gemma3-270m-it-q8.mediatek.mt6993.litertlm",
+      "description": "Gemma 3 270M optimised for MediaTek Dimensity NPUs (Dimensity 9400 Pro, 9400+). Ultra-fast, ~555 MB download. Text only. Subject to Google's Gemma Terms of Use and Prohibited Use Policy.",
+      "sizeInBytes": 554663936,
+      "minDeviceMemoryInGb": 4,
+      "commitHash": "main",
+      "defaultConfig": {
+        "topK": 64,
+        "topP": 0.95,
+        "temperature": 1.0,
+        "maxContextLength": 4096,
+        "maxTokens": 4096,
+        "accelerators": "npu"
+      }
     }
   ]
 }

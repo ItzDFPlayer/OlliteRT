@@ -637,7 +637,10 @@ constructor(
       ?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() }
       ?: emptyList()
     if (accelerators.size == 1 && accelerators[0] == "npu") {
-      val supported = allowedModel.socToModelFiles?.containsKey(SOC) == true
+      // Check both socToModelFiles and modelFile for SOC identifier
+      val supportedBySocMap = allowedModel.socToModelFiles?.containsKey(SOC) == true
+      val supportedByFileName = SOC.isNotEmpty() && allowedModel.modelFile.lowercase().contains(SOC)
+      val supported = supportedBySocMap || supportedByFileName
       if (!supported) Log.d(TAG, "Ignoring model '${allowedModel.name}' because it's NPU-only and not supported on SOC: $SOC")
       return supported
     }
