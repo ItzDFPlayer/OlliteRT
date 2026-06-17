@@ -232,21 +232,22 @@ class RepositoryManager @Inject constructor(
     fetchBounded(url, userAgent = "OlliteRT-RepoRefresh")
 
   companion object {
-    /** Dedup by AllowedModel.modelId — first repo wins. Returns (AllowedModel, repoName, repoId) triples. */
+    /** Dedup by (AllowedModel.modelId, AllowedModel.modelFile) — first repo wins. Returns (AllowedModel, repoName, repoId) triples. */
     fun deduplicateAllowedModels(
       repoModels: List<List<AllowedModel>>,
       repoNames: List<String>,
       repoIds: List<String> = emptyList(),
     ): List<Triple<AllowedModel, String, String>> {
-      val seenModelIds = mutableSetOf<String>()
+      val seenModelKeys = mutableSetOf<String>()
       val result = mutableListOf<Triple<AllowedModel, String, String>>()
 
       for ((repoIndex, models) in repoModels.withIndex()) {
         val repoName = repoNames.getOrElse(repoIndex) { "" }
         val repoId = repoIds.getOrElse(repoIndex) { "" }
         for (model in models) {
-          if (model.modelId in seenModelIds) continue
-          seenModelIds.add(model.modelId)
+          val key = "${model.modelId}|${model.modelFile}"
+          if (key in seenModelKeys) continue
+          seenModelKeys.add(key)
           result.add(Triple(model, repoName, repoId))
         }
       }
