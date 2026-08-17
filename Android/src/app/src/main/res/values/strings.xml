@@ -775,9 +775,9 @@
 
   <!-- Top bar -->
   <string name="topbar_back" translatable="false">Back</string>
-  <string name="topbar_brand_dev" translatable="false">OlliteRT Dev</string>
-  <string name="topbar_brand_beta" translatable="false">OlliteRT Beta</string>
-  <string name="topbar_brand" translatable="false">OlliteRT</string>
+  <string name="topbar_brand_dev" translatable="false">OlliteRT Fork Dev</string>
+  <string name="topbar_brand_beta" translatable="false">OlliteRT Fork Beta</string>
+  <string name="topbar_brand" translatable="false">OlliteRT Fork</string>
   <string name="topbar_settings" translatable="false">Settings</string>
 
   <!-- Status pill labels -->

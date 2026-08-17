@@ -22,7 +22,7 @@ package com.ollitert.llm.server.common
  * rename or transfer only requires updating these two values.
  */
 object GitHubConfig {
-  const val OWNER = "NightMean"
+  const val OWNER = "ItzDFPlayer"
   const val REPO = "OlliteRT"
 
   /** Repository homepage (e.g. for "Learn More" links). */
