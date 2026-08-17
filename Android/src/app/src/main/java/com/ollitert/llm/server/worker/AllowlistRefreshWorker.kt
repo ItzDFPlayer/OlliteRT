@@ -79,7 +79,9 @@ class AllowlistRefreshWorker @AssistedInject constructor(
     val fileManager = ModelFileManager(context, externalFilesDir)
     val allUpdatableModels = mutableListOf<UpdatableInfo>()
     val nonUpdatableDownloaded = mutableListOf<String>()
-    val seenModelIds = mutableSetOf<String>()
+    // Dedup by (name, modelId) so distinct NPU/TPU variants sharing an HF repo id
+    // are each still checked for updates.
+    val seen = mutableSetOf<Pair<String, String>>()
     var enabledRepoCount = 0
     var failedRepoCount = 0
 
@@ -130,8 +132,9 @@ class AllowlistRefreshWorker @AssistedInject constructor(
         Log.d(TAG, "Repo '${repo.id}' refreshed: v${allowlist.contentVersion}")
 
         for (allowedModel in allowlist.models.take(MAX_MODELS_PER_REPO)) {
-          if (allowedModel.modelId in seenModelIds) continue
-          seenModelIds.add(allowedModel.modelId)
+          val key = allowedModel.name to allowedModel.modelId
+          if (key in seen) continue
+          seen.add(key)
           val model = allowedModel.toModel()
           if (fileManager.isModelDownloaded(model)) {
             if (model.updatable) {

@@ -329,6 +329,30 @@ class ModelCatalogMergerTest {
   }
 
   @Test
+  fun keepsVariantsSharingModelIdWithinOfficialFile() {
+    // NPU/TPU variants share the base model's HF repo id but are distinct models.
+    // Dedup keys on (name, modelId), so all variants must be preserved.
+    val dir = createTempDirectory("allowlist-npu").toFile()
+    try {
+      val official =
+        """{"schemaVersion":1,"contentVersion":1,"sourceName":"Official","models":[
+            {"name":"Gemma-4-E2B-it","modelId":"litert-community/gemma-4-E2B-it-litert-lm","modelFile":"a.litertlm","description":"a","sizeInBytes":100,"defaultConfig":{}},
+            {"name":"Gemma-4-E2B-it-sm8750","modelId":"litert-community/gemma-4-E2B-it-litert-lm","modelFile":"b.litertlm","description":"b","sizeInBytes":100,"defaultConfig":{}},
+            {"name":"Gemma-4-E2B-it-qcs8275","modelId":"litert-community/gemma-4-E2B-it-litert-lm","modelFile":"c.litertlm","description":"c","sizeInBytes":100,"defaultConfig":{}}
+          ]}"""
+      File(dir, "model_allowlist_official.json").writeText(official)
+
+      val loader = ModelCatalogMerger(externalFilesDir = dir, appVersionName = "1.0.0")
+      val models = loader.load()
+
+      assertEquals(3, models.size)
+      assertEquals(setOf("Gemma-4-E2B-it", "Gemma-4-E2B-it-sm8750", "Gemma-4-E2B-it-qcs8275"), models.map { it.name }.toSet())
+    } finally {
+      dir.deleteRecursively()
+    }
+  }
+
+  @Test
   fun officialFileProcessedFirstRegardlessOfAlphabeticalOrder() {
     val dir = createTempDirectory("allowlist-order").toFile()
     try {

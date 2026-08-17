@@ -123,7 +123,9 @@ class ModelCatalogMerger(
       if (assetContent != null) bundledAllowlist = ModelAllowlistJson.decode(assetContent)
     } catch (e: Exception) { onError("bundled-asset", e) }
 
-    val seenModelIds = mutableSetOf<String>()
+    // Dedup by (name, modelId): a model is a duplicate only when both match, so
+    // distinct NPU/TPU variants that share the base model's HF repo id are all kept.
+    val seen = mutableSetOf<Pair<String, String>>()
     for (file in filesToProcess) {
       try {
         var decoded = ModelAllowlistJson.decode(file.readText())
@@ -140,8 +142,9 @@ class ModelCatalogMerger(
         }
 
         for (model in decoded.models) {
-          if (model.modelId !in seenModelIds) {
-            seenModelIds.add(model.modelId)
+          val key = model.name to model.modelId
+          if (key !in seen) {
+            seen.add(key)
             allModels.add(model)
           }
         }

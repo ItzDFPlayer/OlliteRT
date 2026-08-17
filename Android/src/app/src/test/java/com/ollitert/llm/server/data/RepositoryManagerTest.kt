@@ -24,15 +24,32 @@ import org.junit.Test
 class RepositoryManagerTest {
 
   @Test
-  fun deduplicatesByModelIdFirstRepoWins() {
+  fun deduplicatesByNameAndModelIdFirstRepoWins() {
     val officialModels = listOf(makeAllowedModel("ModelA", modelId = "community/modelA"))
-    val thirdPartyModels = listOf(makeAllowedModel("ModelA-Custom", modelId = "community/modelA"))
+    val thirdPartyModels = listOf(makeAllowedModel("ModelA", modelId = "community/modelA"))
     val deduped = RepositoryManager.deduplicateAllowedModels(
       repoModels = listOf(officialModels, thirdPartyModels),
       repoNames = listOf("Official", "Community"),
     )
     assertEquals(1, deduped.size)
     assertEquals("Official", deduped[0].second)
+  }
+
+  @Test
+  fun keepsModelsSharingModelIdWithDifferentNames() {
+    // NPU/TPU variants reuse the base model's HF repo id but are distinct models —
+    // all must be kept in the list.
+    val officialModels = listOf(
+      makeAllowedModel("Gemma-4-E2B-it", modelId = "litert-community/gemma-4-E2B-it-litert-lm"),
+      makeAllowedModel("Gemma-4-E2B-it-sm8750", modelId = "litert-community/gemma-4-E2B-it-litert-lm"),
+      makeAllowedModel("Gemma-4-E2B-it-qcs8275", modelId = "litert-community/gemma-4-E2B-it-litert-lm"),
+      makeAllowedModel("Gemma-4-E2B-it-Tensor-G5", modelId = "litert-community/gemma-4-E2B-it-litert-lm"),
+    )
+    val deduped = RepositoryManager.deduplicateAllowedModels(
+      repoModels = listOf(officialModels),
+      repoNames = listOf("Official"),
+    )
+    assertEquals(4, deduped.size)
   }
 
   @Test
@@ -156,8 +173,9 @@ class RepositoryManagerTest {
 
   @Test
   fun deduplicateAcrossThreeReposFirstWins() {
-    val repo1 = listOf(makeAllowedModel("M1", modelId = "shared/model"))
-    val repo2 = listOf(makeAllowedModel("M2", modelId = "shared/model"), makeAllowedModel("M3", modelId = "unique/a"))
+    // The model re-listed in R2 is only deduped when BOTH name and modelId match.
+    val repo1 = listOf(makeAllowedModel("Shared", modelId = "shared/model"))
+    val repo2 = listOf(makeAllowedModel("Shared", modelId = "shared/model"), makeAllowedModel("M3", modelId = "unique/a"))
     val repo3 = listOf(makeAllowedModel("M4", modelId = "unique/b"))
     val deduped = RepositoryManager.deduplicateAllowedModels(
       repoModels = listOf(repo1, repo2, repo3),
