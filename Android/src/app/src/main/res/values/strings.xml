@@ -163,6 +163,8 @@
   <string name="dialog_switch_model_body">This will unload \"%1$s\" and load \"%2$s\".\n\nThe server will restart.\n\nNote: switching between large models on devices with limited RAM may fail because the LiteRT runtime cannot always release native GPU memory between models. If the app crashes or the new model fails to load, fully restart the app (or the device) and try loading the new model directly.</string>
   <string name="label_current_model">current model</string>
   <string name="button_switch">Switch</string>
+  <string name="dialog_npu_load_failed_title">NPU model failed to load</string>
+  <string name="dialog_npu_load_failed_body">The NPU model \"%1$s\" could not be loaded and the app crashed. This usually means your device\'s CPU or ROM (firmware) does not fully support NPU acceleration.\n\nUse the GPU/CPU version of this model instead, or flash a ROM with working NPU drivers (e.g. stock firmware).</string>
   <string name="label_import_model">Import model</string>
   <string name="label_import_from_local_file">From local model file (.litertlm)</string>
   <string name="label_import_from_model_list">From model list file (.json)</string>

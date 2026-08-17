@@ -89,6 +89,9 @@ class ModelManagerDialogState internal constructor() {
   var showImportingDialog by mutableStateOf(false)
   var showSwitchModelDialog by mutableStateOf(false)
   var pendingSwitchModel by mutableStateOf<Model?>(null)
+  // Shown after the process survived a native crash while loading an NPU model.
+  var showNpuLoadFailedDialog by mutableStateOf(false)
+  var npuLoadFailedModelName by mutableStateOf<String?>(null)
 }
 
 @Composable
@@ -329,6 +332,36 @@ fun ModelManagerDialogs(
           ),
         ) {
           Text(stringResource(R.string.cancel))
+        }
+      },
+    )
+  }
+
+  // Dialog explaining a native crash that occurred while loading an NPU model.
+  // Surfaced on the launch after the crash — the marker survives only if the process
+  // was killed by a native SIGABRT during NPU engine creation.
+  val crashedNpuModel = state.npuLoadFailedModelName
+  if (state.showNpuLoadFailedDialog) {
+    AlertDialog(
+      onDismissRequest = {
+        state.showNpuLoadFailedDialog = false
+        state.npuLoadFailedModelName = null
+      },
+      title = { Text(stringResource(R.string.dialog_npu_load_failed_title)) },
+      text = {
+        Text(
+          stringResource(
+            R.string.dialog_npu_load_failed_body,
+            crashedNpuModel ?: stringResource(R.string.label_current_model),
+          )
+        )
+      },
+      confirmButton = {
+        Button(onClick = {
+          state.showNpuLoadFailedDialog = false
+          state.npuLoadFailedModelName = null
+        }) {
+          Text(stringResource(R.string.ok))
         }
       },
     )

@@ -411,6 +411,16 @@ object ServerLlmModelHelper {
       ModelCapability.SPECULATIVE_DECODING in model.capabilities &&
       specDecUserEnabled
 
+    // NPU loads can SIGABRT natively inside the SDK (unrecoverable from Java). Set a
+    // persistent crash marker before creating the engine; it is cleared in the finally
+    // below on any handled outcome. If the process is killed mid-init, the marker survives
+    // so the UI can explain the failure on the next launch instead of a silent crash.
+    val npuBackend = preferredBackend is Backend.NPU
+    if (npuBackend) {
+      ServerPrefs.setNpuLoadInProgress(context, model.name)
+      Log.d(TAG, "NPU backend requested — set NPU load crash marker for '${model.name}'")
+    }
+
     var engine: Engine? = null
     try {
       ExperimentalFlags.enableSpeculativeDecoding = enableSpeculativeDecoding
@@ -549,6 +559,10 @@ object ServerLlmModelHelper {
 
       onDone(cleanUpLiteRtErrorMessage(e.message ?: context.getString(R.string.error_unknown)))
       return
+    } finally {
+      // Clear the NPU crash marker on any handled path (success, Java exception, fallback).
+      // On a native SIGABRT the process dies first, so the marker persists for the UI.
+      if (npuBackend) ServerPrefs.clearNpuLoadInProgress(context)
     }
     onDone("")
   }

@@ -80,6 +80,7 @@ import com.ollitert.llm.server.data.Model
 import com.ollitert.llm.server.data.ModelDownloadStatusType
 import com.ollitert.llm.server.data.OFFICIAL_REPO_ID
 import com.ollitert.llm.server.data.RuntimeType
+import com.ollitert.llm.server.data.ServerPrefs
 import com.ollitert.llm.server.data.UNKNOWN_REPO_LABEL
 import com.ollitert.llm.server.ui.common.OlliteSearchBar
 import com.ollitert.llm.server.ui.common.SCREEN_CONTENT_MAX_WIDTH
@@ -117,6 +118,17 @@ fun GlobalModelManager(
   LaunchedEffect(viewModel) {
     viewModel.toastErrorEvents.collect { message ->
       Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+  }
+
+  // Detect a native crash that occurred while loading an NPU model. The marker is written by
+  // the runtime before Engine init and cleared on any handled outcome — if it's still set,
+  // the process was killed by a SIGABRT mid-load, so surface a friendly explanation.
+  LaunchedEffect(Unit) {
+    val crashedModel = ServerPrefs.consumeNpuLoadCrash(context)
+    if (crashedModel != null) {
+      dialogState.npuLoadFailedModelName = crashedModel
+      dialogState.showNpuLoadFailedDialog = true
     }
   }
 

@@ -33,6 +33,7 @@ private const val PREFS_NAME = "llm_http_prefs"
 // ═══════════════════════════════════════════════════════════════════════════
 
 private const val KEY_DEFAULT_MODEL_NAME = "default_model_name"
+private const val KEY_NPU_LOAD_IN_PROGRESS = "npu_load_in_progress"
 private const val KEY_PREFIX_SYSTEM_PROMPT = "system_prompt_"
 private const val KEY_PREFIX_INFERENCE_CONFIG = "inference_config_"
 private const val KEY_SHOW_MODEL_RECOMMENDATIONS = "show_model_recommendations"
@@ -347,6 +348,31 @@ object ServerPrefs {
       if (modelName != null) putString(KEY_DEFAULT_MODEL_NAME, modelName)
       else remove(KEY_DEFAULT_MODEL_NAME)
     }
+  }
+
+  /**
+   * Marks that an NPU-backed model load is in progress. Called right before the native
+   * LiteRT Engine is created. Cleared on any handled outcome. If the process is killed by a
+   * native SIGABRT during NPU initialization, this marker survives and lets the UI surface
+   * a friendly explanation on the next launch instead of a silent crash.
+   */
+  fun setNpuLoadInProgress(context: Context, modelName: String) {
+    prefs(context).edit { putString(KEY_NPU_LOAD_IN_PROGRESS, modelName) }
+  }
+
+  /** Clears the NPU-load marker once a load reaches a handled outcome (success or error). */
+  fun clearNpuLoadInProgress(context: Context) {
+    prefs(context).edit { remove(KEY_NPU_LOAD_IN_PROGRESS) }
+  }
+
+  /**
+   * Reads and clears the NPU-load crash marker. Returns the model that was mid-load on NPU
+   * when the process died, or null if no NPU load was interrupted.
+   */
+  fun consumeNpuLoadCrash(context: Context): String? {
+    val name = prefs(context).getString(KEY_NPU_LOAD_IN_PROGRESS, null)
+    if (name != null) clearNpuLoadInProgress(context)
+    return name
   }
 
   fun isWarmupEnabled(context: Context): Boolean = get(context, WARMUP_ENABLED)
