@@ -249,20 +249,21 @@ object PayloadBuilders {
 
   /**
    * Builds the JSON response for GET /v1/models/{id}.
-   * Returns null if the model ID doesn't match the active or idle-unloaded model.
+   *
+   * The server runs exactly one model at a time, so any requested model id resolves to the
+   * active model (or the idle-unloaded model when keep_alive has unloaded it). Returns null
+   * only when the id is blank or no model is loaded at all.
    */
   fun modelDetail(activeModel: Model?, uri: String, json: Json, idleUnloadedModelName: String? = null): String? {
     val modelId = uri.removePrefix("/v1/models/")
     if (modelId.isBlank()) return null
     if (activeModel != null) {
-      // Match against the currently loaded model
-      if (!activeModel.name.equals(modelId, ignoreCase = true)) return null
+      // Report the active model regardless of the requested id — there is only one model.
       return json.encodeToString(LlmHttpModelItem.serializer(), activeModel.toModelItem())
     }
     // Model is idle-unloaded by keep_alive — return basic info without capabilities
     // (capabilities require the Model object which isn't available when unloaded)
     val idleName = idleUnloadedModelName ?: return null
-    if (!idleName.equals(modelId, ignoreCase = true)) return null
     val item = LlmHttpModelItem(id = idleName, created = ServerMetrics.modelCreatedAtEpoch.value)
     return json.encodeToString(LlmHttpModelItem.serializer(), item)
   }

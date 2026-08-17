@@ -102,12 +102,20 @@ class ModelLifecycleSelectModelTest {
   }
 
   @Test
-  fun selectModel_returns400_whenRequestedModelDoesNotMatch() {
+  fun selectModel_returnsOk_whenRequestedModelDoesNotMatch() {
     lifecycle.defaultModel = testModel
+    // The server runs exactly one model — any requested name resolves to the active model.
     val result = lifecycle.selectModel("llama-3-8b")
-    assertTrue(result is ModelLifecycle.ModelSelection.Error)
-    assertEquals(400, (result as ModelLifecycle.ModelSelection.Error).statusCode)
-    assertTrue(result.message.contains("not loaded"))
+    assertTrue(result is ModelLifecycle.ModelSelection.Ok)
+    assertEquals(testModel, (result as ModelLifecycle.ModelSelection.Ok).model)
+  }
+
+  @Test
+  fun selectModel_returnsOk_whenRequestedModelDiffersByCase() {
+    lifecycle.defaultModel = testModel
+    val result = lifecycle.selectModel("GEMMA-4-E2B-IT")
+    assertTrue(result is ModelLifecycle.ModelSelection.Ok)
+    assertEquals(testModel, (result as ModelLifecycle.ModelSelection.Ok).model)
   }
 
   @Test

@@ -448,17 +448,14 @@ class ModelLifecycle(
 
   /**
    * Resolves the model to use for an inference request. Handles idle-reload when the model
-   * was unloaded by keep_alive, validates the client's requested model name against the
-   * active model, and returns a descriptive error if there's a mismatch.
+   * was unloaded by keep_alive. Because the server can only run one model at a time, any
+   * requested model name resolves to the single active model — a mismatch is never an error.
    */
   fun selectModel(requestedModel: String?): ModelSelection {
     // The HTTP layer holds RequestAdmission across this call and the complete response.
     // This lock makes selection atomic with unload/reload lifecycle transitions.
     synchronized(keepAliveLock) {
       // If model was unloaded due to keep_alive idle timeout, auto-reload it.
-      // After reload, fall through to the name-matching check below — don't return Ok
-      // blindly, since the client may have requested a different model than what was
-      // idle-unloaded.
       if (defaultModel == null && ServerMetrics.isIdleUnloaded.value) {
         reloadModelFromIdle()
           ?: return ModelSelection.Error(503, "Failed to reload model after idle timeout — check logs for details")
@@ -473,19 +470,23 @@ class ModelLifecycle(
       ) {
         return ModelSelection.Ok(active)
       }
-      // Check if the requested model matches the currently loaded model. We normalize both
-      // names to handle variations (e.g. "gemma-4-e2b" vs "Gemma_4_E2B_it").
+      // The requested model name is normalized and compared only for logging purposes.
+      // Whatever name the client sends, it is always served by the active model — the app
+      // can run exactly one model, so there is nothing else to route to. This lets clients
+      // configured with any model id (e.g. "llama3", "gpt-4o") talk to the loaded model
+      // without needing the device-side name to match.
       val requestedKey = BridgeUtils.normalizeModelKey(requested)
       val activeKey = BridgeUtils.normalizeModelKey(active.name)
-      if (requestedKey == activeKey) {
-        return ModelSelection.Ok(active)
+      if (requestedKey != activeKey) {
+        Log.d(TAG, "Requested model '$requested' does not match loaded model '${active.name}' — serving request with loaded model")
+        RequestLogStore.addEvent(
+          "Client requested model '$requested', serving with loaded model '${active.name}'",
+          level = LogLevel.DEBUG,
+          modelName = active.name,
+          category = EventCategory.SETTINGS,
+        )
       }
-      // The requested model doesn't match the active model. Return a descriptive error.
-      return ModelSelection.Error(
-        400,
-        "Model '${requested}' is not loaded. Currently loaded: '${active.name}'. " +
-          "Please select '${active.name}' in your client or load the requested model on the device first."
-      )
+      return ModelSelection.Ok(active)
     }
   }
 

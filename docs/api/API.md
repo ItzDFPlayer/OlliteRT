@@ -67,7 +67,7 @@ See the [Security Guide](../SECURITY.md) for details on network exposure and cre
 
 | Parameter | Type | Required | Description |
 |:----------|:-----|:--------:|:------------|
-| `model` | string | Yes | Model name (e.g. `Gemma-4-E2B-it`) |
+| `model` | string | Yes | Any value is accepted — the server runs one model at a time and always responds with the currently loaded model |
 | `messages` | array | Yes | Array of message objects (`role` + `content`) |
 | `stream` | boolean | No | Enable SSE streaming (default: `false`) |
 | `stream_options` | object | No | Streaming options. Set `{"include_usage": true}` to receive a usage chunk before `[DONE]` |
@@ -179,7 +179,7 @@ Without `stream_options` (the default), no usage chunk is emitted — the stream
 
 | Parameter | Type | Required | Description |
 |:----------|:-----|:--------:|:------------|
-| `model` | string | Yes | Model name |
+| `model` | string | Yes | Any value is accepted — the server runs one model at a time and always responds with the currently loaded model |
 | `prompt` | string | Yes | Text prompt |
 | `stream` | boolean | No | Enable SSE streaming |
 | `temperature` | number | No | Sampling temperature |
@@ -191,7 +191,7 @@ Alternative API format. Accepts either `messages` (array) or `input` (string) fi
 
 | Parameter | Type | Required | Description |
 |:----------|:-----|:--------:|:------------|
-| `model` | string | Yes | Model name |
+| `model` | string | Yes | Any value is accepted — the server runs one model at a time and always responds with the currently loaded model |
 | `input` | string or array | Yes | Input text or messages array |
 | `stream` | boolean | No | Enable SSE streaming |
 | `tools` | array | No | Tool definitions |
@@ -259,7 +259,7 @@ Anthropic-compatible Messages API. Lets Claude Code and the official Anthropic S
 
 | Parameter | Type | Required | Description |
 |:----------|:-----|:--------:|:------------|
-| `model` | string | Yes | Model name (e.g. `Gemma-4-E2B-it`) |
+| `model` | string | Yes | Any value is accepted — the server runs one model at a time and always responds with the currently loaded model |
 | `messages` | array | Yes | Array of message objects (`role` + `content`) |
 | `max_tokens` | integer | Yes | Maximum tokens to generate |
 | `system` | string or array | No | System prompt — string for the simple form, or an array of `{type:"text", text:"..."}` blocks |
@@ -458,7 +458,7 @@ Returns a list of available models with their capabilities and update status.
 
 ## Model Detail — `GET /v1/models/{id}`
 
-Returns detail for a specific model by name. The model ID is case-insensitive. Returns `404` if the model is not loaded (or not idle-unloaded by keep-alive).
+Returns detail for a model by name. Because the server runs exactly one model at a time, any requested id resolves to the currently loaded model (or the idle-unloaded model when keep-alive has unloaded it). Returns `404` only when no model is loaded.
 
 The response has the same shape as a single entry from the `/v1/models` list.
 

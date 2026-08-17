@@ -16,6 +16,7 @@
 
 package com.ollitert.llm.server.service
 
+import com.ollitert.llm.server.data.Model
 import com.ollitert.llm.server.service.http.*
 import com.ollitert.llm.server.service.inference.*
 
@@ -360,5 +361,41 @@ class PayloadBuildersTest {
     val serialized = json.encodeToString(ResponsesResponse.serializer(), resp)
     assertTrue("should contain function_call type", serialized.contains("\"type\":\"function_call\""))
     assertTrue("should contain call_id", serialized.contains("\"call_id\":\"c1\""))
+  }
+
+  // ── modelDetail() ─────────────────────────────────────────────────────────
+  // The server runs exactly one model, so any requested id resolves to the active model.
+
+  private val activeTestModel = Model(name = "Gemma-4-E2B-it")
+
+  @Test
+  fun modelDetail_returnsActiveModel_forAnyRequestedId() {
+    val body = PayloadBuilders.modelDetail(activeTestModel, "/v1/models/llama-3-8b", json)
+    assertNotNull(body)
+    assertTrue("should contain active model name", body!!.contains("Gemma-4-E2B-it"))
+  }
+
+  @Test
+  fun modelDetail_returnsActiveModel_forMatchingId() {
+    val body = PayloadBuilders.modelDetail(activeTestModel, "/v1/models/Gemma-4-E2B-it", json)
+    assertNotNull(body)
+    assertTrue("should contain active model name", body!!.contains("Gemma-4-E2B-it"))
+  }
+
+  @Test
+  fun modelDetail_returnsNull_whenIdBlank() {
+    assertNull(PayloadBuilders.modelDetail(activeTestModel, "/v1/models/", json))
+  }
+
+  @Test
+  fun modelDetail_returnsNull_whenNoModelAndNoIdleName() {
+    assertNull(PayloadBuilders.modelDetail(null, "/v1/models/anything", json))
+  }
+
+  @Test
+  fun modelDetail_returnsIdleModel_forAnyRequestedId_whenIdleUnloaded() {
+    val body = PayloadBuilders.modelDetail(null, "/v1/models/whatever", json, idleUnloadedModelName = "Gemma-4-E2B-it")
+    assertNotNull(body)
+    assertTrue("should contain idle-unloaded model name", body!!.contains("Gemma-4-E2B-it"))
   }
 }
