@@ -551,14 +551,6 @@ constructor(
   }
 
   private fun isModelSupportedOnDevice(allowedModel: AllowedModel): Boolean {
-    val accelerators = allowedModel.defaultConfig.accelerators
-      ?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() }
-      ?: emptyList()
-    if (accelerators.size == 1 && accelerators[0] == "npu") {
-      val supported = allowedModel.socToModelFiles?.containsKey(SOC) == true
-      if (!supported) Log.d(TAG, "Ignoring model '${allowedModel.name}' because it's NPU-only and not supported on SOC: $SOC")
-      return supported
-    }
     return true
   }
 
