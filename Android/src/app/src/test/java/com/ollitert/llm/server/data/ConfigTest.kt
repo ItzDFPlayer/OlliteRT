@@ -229,6 +229,56 @@ class ConfigTest {
     assertTrue("NPU max_tokens should be LabelConfig (no slider)", maxTokensConfig is LabelConfig)
   }
 
+  @Test
+  fun createLlmChatConfigsForNpuModelMaxTokensIsSliderWithContextLength() {
+    val configs = createLlmChatConfigsForNpuModel(defaultMaxContextLength = 1280, defaultMaxToken = 1280)
+    val maxTokensConfig = configs.first { it.key.id == "max_tokens" }
+    assertTrue("NPU max_tokens with context length should be NumberSliderConfig", maxTokensConfig is NumberSliderConfig)
+    val slider = maxTokensConfig as NumberSliderConfig
+    assertEquals(1280f, slider.sliderMax, 0.01f)
+    assertEquals(1280f, slider.defaultValue, 0.01f)
+  }
+
+  @Test
+  fun createLlmChatConfigsForNpuModelDefaultHasNoThinkingToggle() {
+    val configs = createLlmChatConfigsForNpuModel(supportThinking = false)
+    val keyIds = configs.map { it.key.id }
+    assertFalse("should not contain enable_thinking", keyIds.contains("enable_thinking"))
+  }
+
+  @Test
+  fun createLlmChatConfigsForNpuModelWithThinkingAddsToggle() {
+    val configs = createLlmChatConfigsForNpuModel(supportThinking = true)
+    val keyIds = configs.map { it.key.id }
+    assertTrue("should contain enable_thinking", keyIds.contains("enable_thinking"))
+    val thinkingConfig = configs.first { it.key.id == "enable_thinking" }
+    assertTrue("thinking config should be BooleanSwitch", thinkingConfig is BooleanSwitchConfig)
+  }
+
+  @Test
+  fun createLlmChatConfigsForNpuModelDefaultHasNoSpeculativeDecodingToggle() {
+    val configs = createLlmChatConfigsForNpuModel(supportSpeculativeDecoding = false)
+    val keyIds = configs.map { it.key.id }
+    assertFalse("should not contain enable_speculative_decoding", keyIds.contains("enable_speculative_decoding"))
+  }
+
+  @Test
+  fun createLlmChatConfigsForNpuModelWithSpeculativeDecodingAddsToggle() {
+    val configs = createLlmChatConfigsForNpuModel(supportSpeculativeDecoding = true)
+    val keyIds = configs.map { it.key.id }
+    assertTrue("should contain enable_speculative_decoding", keyIds.contains("enable_speculative_decoding"))
+    val specDecConfig = configs.first { it.key.id == "enable_speculative_decoding" }
+    assertTrue("spec dec config should be BooleanSwitch", specDecConfig is BooleanSwitchConfig)
+    assertEquals(false, specDecConfig.defaultValue)
+  }
+
+  @Test
+  fun createLlmChatConfigsForNpuModelSpeculativeDecodingRequiresReinitialization() {
+    val configs = createLlmChatConfigsForNpuModel(supportSpeculativeDecoding = true)
+    val specDecConfig = configs.first { it.key.id == "enable_speculative_decoding" }
+    assertTrue("speculative decoding toggle should require reinitialization", specDecConfig.needReinitialization)
+  }
+
   // ── createLlmChatConfigs() — speculative decoding toggle ─────────────────
 
   @Test

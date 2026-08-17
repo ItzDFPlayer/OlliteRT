@@ -165,7 +165,10 @@ data class AllowedModel(
         if (npuOnly) {
           createLlmChatConfigsForNpuModel(
             defaultMaxToken = llmMaxToken,
+            defaultMaxContextLength = llmMaxContextLength,
             accelerators = accelerators,
+            supportThinking = llmSupportThinking == true,
+            supportSpeculativeDecoding = llmSupportSpeculativeDecoding == true,
           )
         } else {
           createLlmChatConfigs(

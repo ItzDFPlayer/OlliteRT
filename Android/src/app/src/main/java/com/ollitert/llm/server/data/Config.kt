@@ -294,18 +294,45 @@ fun createLlmChatConfigs(
 /**
  * Creates the configuration settings for an LLM model that only supports NPU.
  *
- * For now NPU models don't support setting topK, topP, and temperature.
+ * NPU models don't support setting topK, topP, and temperature (the NPU backend
+ * uses its own sampler), but they do expose the same max-tokens limit and the
+ * same thinking / speculative decoding toggles as CPU/GPU models.
  */
 fun createLlmChatConfigsForNpuModel(
   defaultMaxToken: Int = DEFAULT_MAX_TOKEN,
+  defaultMaxContextLength: Int? = null,
   accelerators: List<Accelerator> = DEFAULT_ACCELERATORS,
+  supportThinking: Boolean = false,
+  supportSpeculativeDecoding: Boolean = false,
 ): List<Config> {
-  return listOf(
-    LabelConfig(key = ConfigKeys.MAX_TOKENS, defaultValue = "$defaultMaxToken"),
-    SegmentedButtonConfig(
-      key = ConfigKeys.ACCELERATOR,
-      defaultValue = accelerators.sortedBy { preferredAcceleratorOrder(it) }.first().label,
-      options = accelerators.sortedBy { preferredAcceleratorOrder(it) }.map { it.label },
-    ),
-  )
+  var maxTokensConfig: Config =
+    LabelConfig(key = ConfigKeys.MAX_TOKENS, defaultValue = "$defaultMaxToken")
+  if (defaultMaxContextLength != null) {
+    maxTokensConfig =
+      NumberSliderConfig(
+        key = ConfigKeys.MAX_TOKENS,
+        sliderMin = MIN_MAX_TOKENS.toFloat(),
+        sliderMax = defaultMaxContextLength.toFloat(),
+        defaultValue = defaultMaxToken.toFloat(),
+        valueType = ValueType.INT,
+      )
+  }
+  val configs =
+    listOf(
+        maxTokensConfig,
+        SegmentedButtonConfig(
+          key = ConfigKeys.ACCELERATOR,
+          defaultValue = accelerators.sortedBy { preferredAcceleratorOrder(it) }.first().label,
+          options = accelerators.sortedBy { preferredAcceleratorOrder(it) }.map { it.label },
+        ),
+      )
+      .toMutableList()
+
+  if (supportThinking) {
+    configs.add(BooleanSwitchConfig(key = ConfigKeys.ENABLE_THINKING, defaultValue = false, needReinitialization = false)) // Read at request time, not during Engine init
+  }
+  if (supportSpeculativeDecoding) {
+    configs.add(BooleanSwitchConfig(key = ConfigKeys.ENABLE_SPECULATIVE_DECODING, defaultValue = false, requiresModelUpdate = true))
+  }
+  return configs
 }
