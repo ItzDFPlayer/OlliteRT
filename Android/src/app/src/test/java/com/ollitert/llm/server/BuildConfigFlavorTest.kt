@@ -51,7 +51,7 @@ class BuildConfigFlavorTest {
       )
       "stable" -> assertEquals(
         "Prod applicationId should have no suffix",
-        "com.ollitert.llm.server",
+        "com.ollitertfork.llm.server",
         BuildConfig.APPLICATION_ID,
       )
     }

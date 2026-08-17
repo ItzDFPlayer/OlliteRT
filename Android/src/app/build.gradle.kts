@@ -56,7 +56,9 @@ android {
   compileSdk = 36
 
   defaultConfig {
-    applicationId = "com.ollitert.llm.server"
+    // Fork: only the install/identity id is changed — namespace and all source
+    // packages remain com.ollitert.llm.server so upstream commits can be synced cleanly.
+    applicationId = "com.ollitertfork.llm.server"
     minSdk = 31
     targetSdk = 35
     versionCode = resolvedVersionCode
